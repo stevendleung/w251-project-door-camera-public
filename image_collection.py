@@ -91,7 +91,16 @@ def persist_image(folder_path:str,file_name:str,url:str):
 
 if __name__ == '__main__':
     wd = webdriver.Chrome(executable_path=DRIVER_PATH)
-    queries = ["UPS driver","USPS driver"]  #change your set of querries here
+
+    queries = []
+
+    n = int(input("Enter number of search queries : "))
+
+    for a in range(0,n):
+        query = str(input("Enter search query: "))
+        queries.append(query)
+
+    #change your set of querries here
     for query in queries:
 
         wd.get('https://google.com')
