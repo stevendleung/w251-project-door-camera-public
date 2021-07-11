@@ -106,13 +106,13 @@ if __name__ == '__main__':
         wd.get('https://google.com')
         search_box = wd.find_element_by_css_selector('input.gLFyf')
         search_box.send_keys(query)
-        links = fetch_image_urls(query,10,wd)
+        links = fetch_image_urls(query,1000,wd)
         #images_path = '/Users/anand/Desktop/contri/images'  #enter your desired image path
 
         dirname = os.path.dirname(__file__)
-        image_dir = dirname + '/body_rec_images'
+        #image_dir = dirname + '/Users/sleung2/Documents/MIDS\ Program/MIDS\ W251/w251-project-door-camera/body_rec_images/ups_driver_door_camera'
 
-        images_path = image_dir
+        images_path = 'body_rec_images'
         for i in links:
             persist_image(images_path,query,i)
     wd.quit()
