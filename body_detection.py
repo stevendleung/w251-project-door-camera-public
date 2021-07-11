@@ -11,7 +11,7 @@ import imutils
 # In[2]:
 
 
-image = cv2.imread('body_rec_images/UPS_Driver/6bfdba017d.jpg') 
+image = cv2.imread('google_image_scraping/UPS_Driver/6bfdba017d.jpg') 
 
 
 # In[3]:

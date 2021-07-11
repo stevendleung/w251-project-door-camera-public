@@ -112,7 +112,7 @@ if __name__ == '__main__':
         dirname = os.path.dirname(__file__)
         #image_dir = dirname + '/Users/sleung2/Documents/MIDS\ Program/MIDS\ W251/w251-project-door-camera/body_rec_images/ups_driver_door_camera'
 
-        images_path = 'body_rec_images'
+        images_path = 'google_image_scraping'
         for i in links:
             persist_image(images_path,query,i)
     wd.quit()
