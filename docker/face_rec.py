@@ -12,7 +12,7 @@ import numpy as np
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture(-1)
 
 # Load a sample picture and learn how to recognize it.
 obama_image = face_recognition.load_image_file("facial_rec_images/steven.jpg")
@@ -45,7 +45,7 @@ process_this_frame = True
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
-
+ 
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -97,8 +97,6 @@ while True:
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     # Display the resulting image
-    # if smaller frame
-    #frame_small = cv2.resize(frame, (800, 480))
     cv2.imshow('Video', frame)
 
     # Hit 'q' on the keyboard to quit!

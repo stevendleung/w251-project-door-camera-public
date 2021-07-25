@@ -1,0 +1,1 @@
+docker run -e DISPLAY=$DISPLAY --rm --privileged -v /tmp:/tmp -ti face_rec5

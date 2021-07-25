@@ -1,18 +1,21 @@
-# Using ubuntu 18.04 as base image
-FROM ubuntu:18.04
-# update the base image
-RUN apt-get update && apt-get -y install cmake protobuf-compiler
-# install 
-RUN apt-get install python3-pip python3-dev build-essential nodejs -y
-# make python3 -> python
-RUN ln -s /usr/bin/python3 /usr/local/bin/python 
-# update pip
+# FROM nvcr.io/nvidia/l4t-ml:r32.4.34-py3
+FROM nvcr.io/nvidia/l4t-base:r32.4.4
+# tested on Jetson NX
+# Create working directory
+
+COPY face_rec.py /face_rec.py
+COPY facial_rec_images /facial_rec_images
+
+RUN apt update
+RUN apt install -y python3-pip 
+RUN apt install -y cmake 
+RUN apt install -y libjpeg8-dev zlib1g-dev
 RUN pip3 install --upgrade pip
-# install jupyter and lab
+
+RUN pip3 install --ignore-installed pillow
+RUN pip3 install -U tqdm cython
 RUN pip3 install face-recognition
 RUN pip3 install opencv-python
-# set our workdir
-#WORKDIR /src
-#COPY facial_rec_images ./
-# Setup which command to run...
+RUN pip3 install numpy==1.19.4
 
+CMD ["python3","face_rec.py"]
