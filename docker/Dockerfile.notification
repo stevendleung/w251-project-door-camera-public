@@ -1,0 +1,10 @@
+FROM alpine:latest
+ENV PYTHONBUFFERED = 1
+WORKDIR /app
+RUN apk update && \
+apk add python3 py3-pip curl vim
+RUN apk add --update --no-cache libgfortran py3-pandas py3-numpy
+RUN pip3 install paho-mqtt twilio
+
+
+        
