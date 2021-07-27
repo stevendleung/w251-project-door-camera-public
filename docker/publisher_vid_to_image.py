@@ -35,7 +35,6 @@ local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 local_mqttclient.on_publish = on_publish_local
 local_mqttclient.on_disconnect = on_disconnect_local
 
-
 cap = cv2.VideoCapture(0)
 
 frame_count = 0
@@ -46,23 +45,19 @@ while cap.isOpened():
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    # Our operations on the frame come here
-    #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     if ret:
-    #Don't display image in container implementation
-        #cv2.imshow("cropped", frame)
-        path = "/data/door_cam_images/frame{}.jpg".format(image_count)
-        cv2.imwrite(path, frame)
-        frame_count += 120 #at 30fps, advances 1 second
-        image_count += 1
+        if frame_count % 30 == 0:
+            path = "/data/door_cam_images/frame{}.jpg".format(image_count)
+            cv2.imwrite(path, frame)
 
-        cap.set(1,frame_count)
 
-    	#publish the message
-        msg = path
-        local_mqttclient.publish(LOCAL_MQTT_TOPIC,msg, qos=1)
-        print('Image processed')
 
+    	    #publish the message
+            msg = path
+            local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
+            print('Image processed')
+            image_count += 1
+        frame_count += 1
     else:
         cap.release()
         break

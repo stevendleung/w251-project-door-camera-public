@@ -6,7 +6,7 @@ from twilio.rest import Client
 
 LOCAL_MQTT_HOST= "mosquitto-service"
 LOCAL_MQTT_PORT= 1883
-LOCAL_MQTT_TOPIC= "face_detector"
+LOCAL_MQTT_TOPIC= "image_topic"
 
 local_mqttclient = mqtt.Client()
 

@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: face-rec-listener-test
+spec:
+  selector:
+    matchLabels:
+      app: face-rec-listener-test
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: face-rec-listener-test
+    spec:
+      containers:
+      - name: face-rec-listener-test
+        image: stevendleung/face_rec_listener_test

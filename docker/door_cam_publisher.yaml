@@ -18,7 +18,7 @@ spec:
         volumeMounts:
         - mountPath: /dev/video0
           name: dev-video0
-        - mountPath: /data/facial_rec_images
+        - mountPath: /data/door_cam_images
           name: door-cam-images
         securityContext:
           privileged: true
@@ -28,4 +28,4 @@ spec:
           path: /dev/video0
       - name: door-cam-images
         hostPath:
-          path: /data/facial_rec_images
+          path: /data/door_cam_images
