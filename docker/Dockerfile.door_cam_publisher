@@ -1,0 +1,18 @@
+FROM ubuntu:latest
+# this is needed to make sure we can see the log output
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
+RUN apt install -y python3-dev python3-pip  python3-opencv vim-tiny  libopencv-dev
+#RUN pip3 install --upgrade pip
+RUN pip3 install Cython
+RUN pip3 install numpy
+RUN pip3 install paho-mqtt
+
+# Copy your listener.py file into the container
+COPY publisher_vid_to_image.py ./publisher_vid_to_image.py
+#RUN mkdir /door_cam_images
+
+CMD python3 publisher_vid_to_image.py
+
+
