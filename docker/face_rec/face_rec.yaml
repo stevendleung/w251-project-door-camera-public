@@ -1,27 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: publisher
+  name: face-rec
 spec:
   selector:
     matchLabels:
-      app: publisher
+      app: face-rec
   replicas: 1 # tells deployment to run 1 pods matching the template
   template:
     metadata:
       labels:
-        app: publisher
+        app: face-rec
     spec:
-      hostNetwork: true
       containers:
-      - name: publisher
-        image: stevendleung/publisher:latest
+      - name: face-rec
+        image: stevendleung/face_rec
         volumeMounts:
-        - mountPath: /dev/video0
-          name: dev-video0
+        - mountPath: /data/door_cam_images
+          name: door-cam-images
         securityContext:
           privileged: true
       volumes:
-      - name: dev-video0
+      - name: door-cam-images
         hostPath:
-          path: /dev/video0
+          path: /data/door_cam_images

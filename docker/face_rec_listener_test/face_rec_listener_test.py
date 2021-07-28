@@ -6,7 +6,7 @@ from twilio.rest import Client
 
 LOCAL_MQTT_HOST= "mosquitto-service"
 LOCAL_MQTT_PORT= 1883
-LOCAL_MQTT_TOPIC= "image_topic"
+LOCAL_MQTT_TOPIC= "model_output_topic"
 
 local_mqttclient = mqtt.Client()
 
@@ -21,19 +21,7 @@ def on_disconnect_local(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
   try:
-    #account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    #auth_token = os.environ['TWILIO_AUTH_TOKEN']
-    #client = Client(account_sid, auth_token)
 
-    #message = client.messages \
-                # .create(
-                #      body="Join Earth's mightiest heroes. Like Kevin Bacon.",
-                #      from_='+15017122661',
-                #      to='+15558675310'
-                #  )
-
-    #print(message.sid)
-    print("Face detected")
     print("message: ", str(msg.payload))
     #print("message received: ",str(msg.payload.decode("utf-8"))) 
   except:

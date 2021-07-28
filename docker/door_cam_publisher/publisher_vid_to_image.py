@@ -50,13 +50,10 @@ while cap.isOpened():
             path = "/data/door_cam_images/frame{}.jpg".format(image_count)
             cv2.imwrite(path, frame)
 
-
-
-    	    #publish the message
-            msg = path
-            local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
-            print('Image processed')
             image_count += 1
+        #publish the message
+        local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
+        print('Image processed')        
         frame_count += 1
     else:
         cap.release()

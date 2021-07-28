@@ -3,9 +3,6 @@ FROM nvcr.io/nvidia/l4t-base:r32.4.4
 # tested on Jetson NX
 # Create working directory
 
-COPY face_rec.py /face_rec.py
-COPY facial_rec_images /facial_rec_images
-
 RUN apt update
 RUN apt install -y python3-pip 
 RUN apt install -y cmake 
@@ -17,5 +14,9 @@ RUN pip3 install -U tqdm cython
 RUN pip3 install face-recognition
 RUN pip3 install opencv-python
 RUN pip3 install numpy==1.19.4
+RUN pip3 install paho-mqtt
+
+COPY face_rec.py /face_rec.py
+COPY facial_rec_images /facial_rec_images
 
 CMD ["python3","face_rec.py"]

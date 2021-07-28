@@ -9,22 +9,20 @@ docker kill $(docker ps -q)
 # kubectl delete deployment/service <app_name>
 kubectl delete deployment notification
 kubectl delete deployment detector
+kubectl delete deployment door-cam-publisher
+kubectl delete deployment face-rec
+kubectl delete deployment face-rec-listener-test #TEMP
 kubectl delete deployment mosquitto-deployment
 kubectl delete service mosquitto-service
 
-# build 
-docker build --no-cache -t jramirez0508/notification -f Dockerfile.notification .
-docker push jramirez0508/notification
-
-docker build -t jramirez0508/detector -f Dockerfile.detector . 
-docker push jramirez0508/detector
-
 # Launch edge k3s deployments and services
-kubectl apply -f mosquitto.yaml
-kubectl apply -f mosquittoService.yaml # Service - allows across container comms
-kubectl apply -f detector.yaml
-kubectl apply -f notification.yaml
-# kubectl apply -f face_detector.yaml
+kubectl apply -f mosquitto/mosquitto.yaml
+kubectl apply -f mosquitto/mosquittoService.yaml # Service - allows across container comms
+kubectl apply -f door_cam_publisher/door_cam_publisher.yaml
+kubectl apply -f face_rec/face_rec.yaml
+kubectl apply -f face_rec_listener_test/face_rec_listener_test.yaml #TEMP
+kubectl apply -f notification/notification.yaml
+# kubectl apply -f face_detector.yaml #TEMP
 # kubectl apply -f yolov5.yaml
 kubectl get pods 
 
