@@ -1,0 +1,11 @@
+FROM jroshanucb/w251_project_yolov5:2
+# this docker image is created from l4t-pytorch:r32.4.4-pth1.6-py3 with yolov5 preinstalled along with necessary libraries
+
+# adding mqtt service
+RUN pip3 install paho-mqtt
+
+# Copy your listener.py file into the container
+COPY detect_delivery.py /home/detect_delivery.py
+COPY best.pt /home/best.pt
+
+CMD python3 /home/detect_delivery.py --source '/data/door_cam_images'  --weights '/home/best.pt' --conf 0.4 --save-txt

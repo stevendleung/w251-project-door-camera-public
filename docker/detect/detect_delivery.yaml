@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detect-delivery
+spec:
+  selector:
+    matchLabels:
+      app: detect-delivery
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: detect-delivery
+    spec:
+      containers:
+      - name: detect-delivery
+        image: jroshanucb/detect_delivery
+        volumeMounts:
+        - mountPath: /data/door_cam_images
+          name: door-cam-images
+        securityContext:
+          privileged: true
+      volumes:
+      - name: door-cam-images
+        hostPath:
+          path: /data/door_cam_images
