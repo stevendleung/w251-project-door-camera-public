@@ -1,9 +1,3 @@
-"""Run inference with a YOLOv5 model on images
-
-Usage:
-    $ python3 path/to/detect_delivery.py --source path/to/img.jpg --weights model.pt --save-txt
-"""
-
 import argparse
 import sys
 import time
@@ -19,50 +13,7 @@ import paho.mqtt.client as mqtt
 import numpy as np
 # ------------------------------------------------------------------------
 
-FILE = Path(__file__).absolute()
-sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
-
-from models.experimental import attempt_load
-from utils.datasets import LoadStreams, LoadImages
-from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
-    apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
-from utils.plots import colors, plot_one_box
-from utils.torch_utils import select_device, load_classifier, time_synchronized
-
-# ------------------------------------------------------------------------
-# config for the MQTT messages
-LOCAL_MQTT_HOST="mosquitto-service"
-LOCAL_MQTT_PORT=1883
-LOCAL_MQTT_TOPIC_IN="image_topic"
-LOCAL_MQTT_TOPIC_OUT="model_output_topic"
-connected_flag = False
-# Client declaration
-local_mqttclient = mqtt.Client()
 cmd_options = None # used by the param parsing
-
-# callback functions for MQTT setup
-def on_connect_local(client, userdata, flags, rc): 
-    global connected_flag
-    if rc == 0:      
-        print("Successfully connected to local broker with rc: " + str(rc))
-        connected_flag = True
-    else: 
-        print("Error - Couldn't connect to local broker, rc code: " + str(rc))
-
-def on_disconnect_local(client, userdata, flags, rc): 
-    print("Disconnected from local broker, result code" + str(rc))
-    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
-
-def on_publish_local(client, userdata, msg_id):
-    print("Message successfully published: {}".format(msg_id))
-
-# linking the CallBacks
-local_mqttclient.on_connect = on_connect_local
-local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
-local_mqttclient.on_publish = on_publish_local
-local_mqttclient.on_disconnect = on_disconnect_local
-
-# ------------------------------------------------------------------------
 
 @torch.no_grad()
 def run(filename, # include path of the file
@@ -217,63 +168,11 @@ def run(filename, # include path of the file
     return mesg
 
 
-# Publishing message to the Notification Queue as an output from the model
-# Message Structure:
-#   Video Source Id: 1 (default)
-#   Type of Report: 0 (FaceRec); 1 (Del[ivery]Nodel[ivery])
-#   Classification: 
-#       If Type of Report = 0 (FaceRec)
-#           0 (Known Person)
-#           1 (Unknown Person)
-#       If Type of Report = 1 (DelNodel)
-#           0 (Delivery)
-#           1 (Non-Delivery)
-#   Person Name: string
-#   Filename: string
-#   Box Coordinates: x, y, w, h 
-#   
-#   Example: 1; 0; 0; Steven; image_380.jpg; 0.234,0.123,0.346,0.778
-#   Example: 1; 1; 0; ; image_480.jpg; 0.234,0.123,0.346,0.778
-
-def on_message(client, userdata, msg):
-  '''Action to perform upon receiving message from broker. Takes image path message and runs face_rec model on that image. Publishes model output to new topic.'''
-    
-    # parse the input message
-    new_msg = msg.payload.decode("utf-8")
-    mesg_items = new_msg.split(';')
-    vid_source = mesg_items[0]
-    type_of_report = 1
-    classification = 0
-    person_name = ''
-    filename = mesg_items[1] + mesg_items[2]
-    face_locations = '0,0,0,0'
-
-    mesg = run(filename, **vars(cmd_options))
-
-    # publish the message to the notification queue
-    model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                person_name, current_msg, face_locations)
-    local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC,model_output_msg)
-
-    return
-
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--source', type=str, default='data/images', help='file/dir/URL/glob, 0 for webcam')
-    parser.add_argument('--weights', nargs='+', type=str, default='yolov5s.pt', help='model.pt path(s)')
-    parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
-    parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
-    parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
-    parser.add_argument('--save-txt', action='store_true', help='save results to *.txt')
-    opt = parser.parse_args()
-    return opt
-
-
 def main(cmd_options):
     print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     check_requirements(exclude=('tensorboard', 'thop'))
-    # Loop listener forever
-    local_mqttclient.loop_forever()
+    filename = ''
+    mesg = run(ilename, **vars(fcmd_options))
 
 
 if __name__ == "__main__":
