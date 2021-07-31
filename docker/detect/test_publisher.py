@@ -164,6 +164,7 @@ def run():
     local_mqttclient.on_disconnect = on_disconnect_local
 
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
+    print("Topic to be published to: ", PUBLISH_TOPIC)
     publishDataToModel(PUBLISH_TOPIC)
 
 
