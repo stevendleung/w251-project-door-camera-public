@@ -42,12 +42,14 @@ def run(filename, # include path of the file
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         ):
-    save_img = not nosave and not source.endswith('.txt')  # save inference images
-    save_txt = True
+    # save_img = not nosave and not source.endswith('.txt')  # save inference images
+    save_img = False
+    save_txt = False
+    ret_msg = ''
 
     # Directories
-    save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
-    (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
+    # save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
+    # (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
 
     # Initialize
     set_logging()
@@ -78,9 +80,6 @@ def run(filename, # include path of the file
     img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
     img = np.ascontiguousarray(img)
 
-    # return path, img, img0, self.cap
-
-
     dataset = LoadImages(source, img_size=imgsz, stride=stride)
     bs = 1  # batch_size
 
@@ -101,7 +100,6 @@ def run(filename, # include path of the file
 
     # Apply NMS
     pred = non_max_suppression(pred, 0.25, 0.45, None, False, max_det=1000)
-    # pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
     t2 = time_synchronized()
 
     # Process detections
@@ -125,36 +123,12 @@ def run(filename, # include path of the file
 
             # Write results
             for *xyxy, conf, cls in reversed(det):
-                if save_txt:  # Write to file
-                    xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                    line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                    with open(txt_path + '.txt', 'a') as f:
-                        f.write(('%g ' * len(line)).rstrip() % line + '\n')
-
-                if save_img or save_crop or view_img:  # Add bbox to image
-                    c = int(cls)  # integer class
-                    label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
-                    plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=line_thickness)
-                    if save_crop:
-                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-
-        # Print time (inference + NMS)
-        print(f'{s}Done. ({t2 - t1:.3f}s)')
-
-        # Save results (image with detections)
-        if save_img:
-            cv2.imwrite(save_path, im0)
-
-    if save_txt or save_img:
-        s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
-        print(f"Results saved to {save_dir}{s}")
-
-    if update:
-        strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
+                xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
+                ret_msg += line
 
     print(f'Done. ({time.time() - t0:.3f}s)')
-    mesg = ''
-    return mesg
+    return ret_mesg
 
 def parse_opt():
     parser = argparse.ArgumentParser()
@@ -169,8 +143,8 @@ def main(cmd_options):
     check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
     mesg = run(filename, **vars(cmd_options))
+    print('Inference results: \n', ret_msg)
 
 if __name__ == "__main__":
-    print('inside __name__')
     cmd_options = parse_opt()
     main(cmd_options)
