@@ -190,8 +190,10 @@ def parse_opt():
     opt = parser.parse_args()
     return opt
 
-def main(cmd_options):
+def main(cmd_opts):
     global local_mqttclient
+    global cmd_options
+    cmd_options = cmd_opts
     # Loop listener forever
     modelLoad(**vars(cmd_options))
 
@@ -205,6 +207,5 @@ def main(cmd_options):
 
 if __name__ == "__main__":
     # update cmd_options global variable
-    global cmd_options 
-    cmd_options = parse_opt()
-    main(cmd_options)
+    cmd_opts = parse_opt()
+    main(cmd_opts)
