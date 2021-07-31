@@ -23,7 +23,7 @@ def modelLoad(
         weights='yolov5s.pt',  # model.pt path(s)
         source='data/images',  # not relevant with MQTT
         imgsz=640,  # inference size (pixels)
-        half=True,  # use FP16 half-precision inference
+        half=False,  # use FP16 half-precision inference
         ):
 
     global model
@@ -45,7 +45,7 @@ def run(filename, # include path of the file
         weights='yolov5s.pt',  # model.pt path(s)
         source='data/images',  # not relevant with MQTT
         imgsz=640,  # inference size (pixels)
-        half=True,  # use FP16 half-precision inference
+        half=False,  # use FP16 half-precision inference
         ):
     global model
     ret_msg = ''
