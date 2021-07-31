@@ -174,8 +174,9 @@ def on_message(client, userdata, msg):
     mesg = run(filename, **vars(cmd_options))
 
     # publish the message to the notification queue
-    model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                person_name, current_msg, face_locations)
+    model_output_msg = "{};{};{};{};{}".format(vid_source, type_of_report, classification,
+                                                person_name, mesg)
+    print("Message to be written to the topic: ", model_output_msg)
     local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC, model_output_msg)
     return
 
