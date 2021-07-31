@@ -50,7 +50,7 @@ def on_connect_local(client, userdata, flags, rc):
     global connected_flag
     if rc == 0:
         print("Successfully connected to local broker with rc: " + str(rc))
-        client.subscribe(LOCAL_MQTT_TOPIC_IN)
+        local_mqttclient.subscribe(LOCAL_MQTT_TOPIC_IN)
     else: 
         print("Error - Couldn't connect to local broker, rc code: " + str(rc))
 
