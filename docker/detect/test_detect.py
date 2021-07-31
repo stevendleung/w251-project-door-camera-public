@@ -169,5 +169,6 @@ def main(cmd_options):
 
 if __name__ == "__main__":
     print('inside __name__')
-    global cmd_options = parse_opt()
+    global cmd_options
+    cmd_options = parse_opt()
     main(cmd_options)
