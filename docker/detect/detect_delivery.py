@@ -160,9 +160,7 @@ def run(filename, # include path of the file
 
 def on_message(client, userdata, msg):
   '''Action to perform upon receiving message from broker. Takes image path message and runs face_rec model on that image. Publishes model output to new topic.'''
-    
-    global cmd_options 
-
+    global cmd_options
     # parse the input message
     new_msg = msg.payload.decode("utf-8")
     mesg_items = new_msg.split(';')
