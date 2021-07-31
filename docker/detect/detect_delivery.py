@@ -162,7 +162,9 @@ def on_message(client, userdata, msg):
     # Action to perform upon receiving message from video streamer. Takes image path message and runs delivery/no-delivery model. Output is sent to notification
     global cmd_options
     # parse the input message
+    print("Received Message: ", msg, " from ", LOCAL_MQTT_TOPIC_IN)
     new_msg = msg.payload.decode("utf-8")
+    print("Received Message: ", new_msg)
     mesg_items = new_msg.split(';')
     vid_source = mesg_items[0]
     type_of_report = 1
@@ -177,7 +179,7 @@ def on_message(client, userdata, msg):
     model_output_msg = "{};{};{};{};{}".format(vid_source, type_of_report, classification,
                                                 person_name, mesg)
     print("Message to be written to the topic: ", model_output_msg)
-    local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC, model_output_msg)
+    local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
 
 def parse_opt():
