@@ -14,6 +14,7 @@ sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
+from utils.augmentations import letterbox
 from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
     apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
 from utils.plots import colors, plot_one_box
