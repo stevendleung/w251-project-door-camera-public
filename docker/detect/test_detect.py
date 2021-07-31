@@ -19,7 +19,7 @@ from utils.general import check_img_size, check_requirements, check_imshow, colo
 from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
-cmd_options = None # used by the param parsing
+global cmd_options = None # used by the param parsing
 
 @torch.no_grad()
 def run(filename, # include path of the file
@@ -169,6 +169,5 @@ def main(cmd_options):
 
 if __name__ == "__main__":
     print('inside __name__')
-    global cmd_options
     cmd_options = parse_opt()
     main(cmd_options)
