@@ -35,7 +35,6 @@ def modelLoad(
     model = attempt_load(weights, map_location=device)  # load FP32 model
     stride = int(model.stride.max())  # model stride
     imgsz = check_img_size(imgsz, s=stride)  # check image size
-    names = model.module.names if hasattr(model, 'module') else model.names  # get class names
     if half:
         model.half()  # to FP16
 
@@ -54,6 +53,8 @@ def run(filename, # include path of the file
     img0 = cv2.imread(path)  # BGR
     im0s = img0
     assert img0 is not None, 'Image Not Found ' + path
+
+    stride = int(model.stride.max())  # model stride
 
     # # Padded resize
     img = letterbox(img0, imgsz, stride=stride)[0]
@@ -85,26 +86,17 @@ def run(filename, # include path of the file
     for i, det in enumerate(pred):  # detections per image
         p, s, im0 = path, '', im0s.copy()
 
-        p = Path(p)  # to Path
-        s += '%gx%g ' % img.shape[2:]  # print string
         gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-        imc = im0  # for save_crop
         if len(det):
             # Rescale boxes from img_size to im0 size
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
-            # Print results
-            for c in det[:, -1].unique():
-                n = (det[:, -1] == c).sum()  # detections per class
-                s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-
-            # Write results
+            # get the predictions to return
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                 line = str(cls.item()) + '; ' + ','.join(map(str,xywh)) + ';'
                 ret_msg += str(line)
 
-    # print(f'Done. ({time.time() - t0:.3f}s)')
     return ret_msg
 
 def parse_opt():
