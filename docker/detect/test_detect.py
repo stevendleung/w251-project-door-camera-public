@@ -20,8 +20,12 @@ from utils.torch_utils import select_device, time_synchronized
 global cmd_options  # used by the param parsing
 global model 
 
-def modelLoad():
-    half = True
+def modelLoad(
+        weights='yolov5s.pt',  # model.pt path(s)
+        source='data/images',  # not relevant with MQTT
+        imgsz=640,  # inference size (pixels)
+        half=True,  # use FP16 half-precision inference
+        ):
     # Initialize
     set_logging()
     device = select_device('')
@@ -39,7 +43,7 @@ def modelLoad():
 @torch.no_grad()
 def run(filename, # include path of the file
         weights='yolov5s.pt',  # model.pt path(s)
-        source='data/images',  # file/dir/URL/glob, 0 for webcam
+        source='data/images',  # not relevant with MQTT
         imgsz=640,  # inference size (pixels)
         half=True,  # use FP16 half-precision inference
         ):
@@ -114,7 +118,7 @@ def parse_opt():
 def main(cmd_options):
     # print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     filename = ''
-    modelLoad()
+    modelLoad(**vars(cmd_options))
     mesg = run(filename, **vars(cmd_options))
     print('Inference results: \n', mesg)
 
