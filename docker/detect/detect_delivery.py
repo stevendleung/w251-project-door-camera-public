@@ -197,10 +197,10 @@ def main(cmd_opts):
 
     # linking the CallBacks
     local_mqttclient.on_connect = on_connect_local
-    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
     local_mqttclient.on_publish = on_publish_local
     local_mqttclient.on_disconnect = on_disconnect_local
     local_mqttclient.on_message = on_message
+    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
     local_mqttclient.loop_forever()
 
 if __name__ == "__main__":
