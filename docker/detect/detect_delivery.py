@@ -47,10 +47,11 @@ local_mqttclient = mqtt.Client()
 
 # callback functions for MQTT setup
 def on_connect_local(client, userdata, flags, rc): 
-    global connected_flag
+    # get the mqttclient
+    global local_mqttclient
     if rc == 0:
-        print("Successfully connected to local broker with rc: " + str(rc))
         local_mqttclient.subscribe(LOCAL_MQTT_TOPIC_IN)
+        print("Successfully connected to local broker with rc: " + str(rc) + " & subscribed to the topic: ", LOCAL_MQTT_TOPIC_IN)
     else: 
         print("Error - Couldn't connect to local broker, rc code: " + str(rc))
 
