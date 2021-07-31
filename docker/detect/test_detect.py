@@ -17,8 +17,7 @@ from utils.augmentations import letterbox
 from utils.general import check_img_size, colorstr, non_max_suppression, scale_coords, xyxy2xywh, set_logging
 from utils.torch_utils import select_device, time_synchronized
 
-global cmd_options  # used by the param parsing
-global model 
+model = None
 
 def modelLoad(
         weights='yolov5s.pt',  # model.pt path(s)
@@ -26,6 +25,8 @@ def modelLoad(
         imgsz=640,  # inference size (pixels)
         half=True,  # use FP16 half-precision inference
         ):
+
+    global model
     # Initialize
     set_logging()
     device = select_device('')
@@ -46,6 +47,7 @@ def run(filename, # include path of the file
         imgsz=640,  # inference size (pixels)
         half=True,  # use FP16 half-precision inference
         ):
+    global model
     ret_msg = ''
 
     # Read image
@@ -63,11 +65,7 @@ def run(filename, # include path of the file
     img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
     img = np.ascontiguousarray(img)
 
-    # Run inference
-    # if device.type != 'cpu':
-    #     model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
-
     img = torch.from_numpy(img).to(device)
     img = img.half() if half else img.float()  # uint8 to fp16/32
     img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -108,7 +106,6 @@ def parse_opt():
     return opt
 
 def main(cmd_options):
-    # print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     filename = ''
     modelLoad(**vars(cmd_options))
     mesg = run(filename, **vars(cmd_options))
