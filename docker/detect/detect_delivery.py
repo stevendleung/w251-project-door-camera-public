@@ -159,7 +159,7 @@ def run(filename, # include path of the file
 #   Example: 1; 1; 0; ; image_480.jpg; 0.234,0.123,0.346,0.778
 
 def on_message(client, userdata, msg):
-  '''Action to perform upon receiving message from broker. Takes image path message and runs face_rec model on that image. Publishes model output to new topic.'''
+    # Action to perform upon receiving message from video streamer. Takes image path message and runs delivery/no-delivery model. Output is sent to notification
     global cmd_options
     # parse the input message
     new_msg = msg.payload.decode("utf-8")
