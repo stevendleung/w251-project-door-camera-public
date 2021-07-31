@@ -159,13 +159,19 @@ def run(filename, # include path of the file
     mesg = ''
     return mesg
 
+def parse_opt():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--weights', nargs='+', type=str, default='yolov5s.pt', help='model.pt path(s)')
+    parser.add_argument('--source', type=str, default='data/images', help='file/dir/URL/glob, 0 for webcam')
+    parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
+    opt = parser.parse_args()
+    return opt
 
 def main(cmd_options):
     print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
     mesg = run(filename, **vars(fcmd_options))
-
 
 if __name__ == "__main__":
     print('inside __name__')
