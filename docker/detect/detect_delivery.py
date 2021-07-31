@@ -35,8 +35,8 @@ model = None        # trained model to be loaded once
 cmd_options = None  # command options to be used in the MQTT message loop
 
 # config for the MQTT messages
-# LOCAL_MQTT_HOST="mosquitto-service"
-LOCAL_MQTT_HOST="localhost"
+LOCAL_MQTT_HOST="mosquitto-service"
+# LOCAL_MQTT_HOST="localhost"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC_IN="image_topic"
 LOCAL_MQTT_TOPIC_OUT="model_output_topic"
