@@ -107,7 +107,6 @@ local_mqttclient = mqtt.Client()
 # Setup Local MQTT callbacks
 def on_connect_local(client, userdata, flags, rc):
     print("connected to ", PUBLISH_TOPIC, " with rc: " + str(rc))
-    publishDataToModel(PUBLISH_TOPIC)
 
 def on_disconnect_local(client, userdata, flags, rc): 
     print("Disconnected from local broker, result code" + str(rc))
@@ -165,6 +164,8 @@ def run():
     local_mqttclient.on_disconnect = on_disconnect_local
 
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
+    publishDataToModel(PUBLISH_TOPIC)
+
 
 def main():
     run()
