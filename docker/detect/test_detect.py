@@ -19,7 +19,7 @@ from utils.general import check_img_size, check_requirements, check_imshow, colo
 from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
-global cmd_options = None # used by the param parsing
+global cmd_options  # used by the param parsing
 
 @torch.no_grad()
 def run(filename, # include path of the file
