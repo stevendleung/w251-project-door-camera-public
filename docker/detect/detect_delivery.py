@@ -59,7 +59,7 @@ def on_disconnect_local(client, userdata, flags, rc):
     print("Disconnected from local broker, result code" + str(rc))
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 
-def on_publish_local(client, userdata, msg_id, rc):
+def on_publish_local(client, userdata, msg_id):
     print("Message successfully published: {}".format(msg_id))
 
 def on_subscribe_local(client, userdata, msg_id, rc):
