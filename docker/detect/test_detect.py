@@ -122,7 +122,7 @@ def run(filename, # include path of the file
             # Write results
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                line = (cls.item(), *xywh)
+                line = str(cls.item()) + '; ' + ','.join(map(str,*xywh)) + ';'
                 ret_msg += str(line)
 
     print(f'Done. ({time.time() - t0:.3f}s)')
