@@ -105,6 +105,7 @@ def run(filename, # include path of the file
     t2 = time_synchronized()
 
     # Apply Classifier
+    classify = False
     if classify:
         pred = apply_classifier(pred, modelc, img, im0s)
 
