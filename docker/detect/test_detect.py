@@ -123,7 +123,7 @@ def run(filename, # include path of the file
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                 line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                ret_msg += line
+                ret_msg += str(line)
 
     print(f'Done. ({time.time() - t0:.3f}s)')
     return ret_mesg
