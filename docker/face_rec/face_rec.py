@@ -109,7 +109,7 @@ def on_message(client, userdata, msg):
       if len(face_names_locations[0]) == 0:
         classification = 'None'
         person_name = ''
-      elif 'Unknown' in face_names:
+      elif 'Unknown' in face_names_locations[0]:
         classification = 'Unknown'
         person_name = ''
       else:
