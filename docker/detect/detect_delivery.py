@@ -204,6 +204,7 @@ def main(cmd_options):
     local_mqttclient.loop_forever()
 
 if __name__ == "__main__":
+    # update cmd_options global variable
     global cmd_options 
     cmd_options = parse_opt()
     main(cmd_options)
