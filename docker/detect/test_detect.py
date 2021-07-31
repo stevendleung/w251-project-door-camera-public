@@ -43,6 +43,7 @@ def run(filename, # include path of the file
         half=False,  # use FP16 half-precision inference
         ):
     save_img = not nosave and not source.endswith('.txt')  # save inference images
+    save_txt = True
 
     # Directories
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
@@ -88,7 +89,6 @@ def run(filename, # include path of the file
         model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
 
-# for path, img, im0s, vid_cap in dataset:
     img = torch.from_numpy(img).to(device)
     img = img.half() if half else img.float()  # uint8 to fp16/32
     img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -103,11 +103,6 @@ def run(filename, # include path of the file
     pred = non_max_suppression(pred, 0.25, 0.45, None, False, max_det=1000)
     # pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
     t2 = time_synchronized()
-
-    # Apply Classifier
-    classify = False
-    if classify:
-        pred = apply_classifier(pred, modelc, img, im0s)
 
     # Process detections
     for i, det in enumerate(pred):  # detections per image
