@@ -141,7 +141,7 @@ def main(cmd_options):
     check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
     mesg = run(filename, **vars(cmd_options))
-    print('Inference results: \n', ret_msg)
+    print('Inference results: \n', mesg)
 
 if __name__ == "__main__":
     cmd_options = parse_opt()
