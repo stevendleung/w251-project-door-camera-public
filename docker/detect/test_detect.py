@@ -171,7 +171,7 @@ def main(cmd_options):
     print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
-    mesg = run(filename, **vars(fcmd_options))
+    mesg = run(filename, **vars(cmd_options))
 
 if __name__ == "__main__":
     print('inside __name__')
