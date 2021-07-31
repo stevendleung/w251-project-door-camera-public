@@ -107,8 +107,6 @@ def run(filename, # include path of the file
         p, s, im0, frame = path, '', im0s.copy(), getattr(dataset, 'frame', 0)
 
         p = Path(p)  # to Path
-        save_path = str(save_dir / p.name)  # img.jpg
-        txt_path = str(save_dir / 'labels' / p.stem) + ('' if dataset.mode == 'image' else f'_{frame}')  # img.txt
         s += '%gx%g ' % img.shape[2:]  # print string
         gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
         imc = im0.copy() if save_crop else im0  # for save_crop
