@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: mosquitto
-        image: jramirez0508/mosquitto
+        image: jroshanucb/mosquitto
         ports:
         - containerPort: 1883
+
