@@ -13,7 +13,6 @@ FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
 from models.experimental import attempt_load
-# from utils.datasets import LoadImages
 from utils.augmentations import letterbox
 from utils.general import check_img_size, colorstr, non_max_suppression, scale_coords, xyxy2xywh, set_logging
 from utils.torch_utils import select_device, time_synchronized
@@ -23,17 +22,6 @@ global model
 
 def modelLoad():
     half = True
-    
-
-@torch.no_grad()
-def run(filename, # include path of the file
-        weights='yolov5s.pt',  # model.pt path(s)
-        source='data/images',  # file/dir/URL/glob, 0 for webcam
-        imgsz=640,  # inference size (pixels)
-        half=True,  # use FP16 half-precision inference
-        ):
-    ret_msg = ''
-
     # Initialize
     set_logging()
     device = select_device('')
@@ -46,6 +34,16 @@ def run(filename, # include path of the file
     names = model.module.names if hasattr(model, 'module') else model.names  # get class names
     if half:
         model.half()  # to FP16
+
+
+@torch.no_grad()
+def run(filename, # include path of the file
+        weights='yolov5s.pt',  # model.pt path(s)
+        source='data/images',  # file/dir/URL/glob, 0 for webcam
+        imgsz=640,  # inference size (pixels)
+        half=True,  # use FP16 half-precision inference
+        ):
+    ret_msg = ''
 
     # Read image
     path = source
@@ -60,12 +58,9 @@ def run(filename, # include path of the file
     img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
     img = np.ascontiguousarray(img)
 
-    # dataset = LoadImages(source, img_size=imgsz, stride=stride)
-    bs = 1  # batch_size
-
     # Run inference
-    if device.type != 'cpu':
-        model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
+    # if device.type != 'cpu':
+    #     model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
 
     img = torch.from_numpy(img).to(device)
@@ -84,7 +79,6 @@ def run(filename, # include path of the file
 
     # Process detections
     for i, det in enumerate(pred):  # detections per image
-        # p, s, im0, frame = path, '', im0s.copy(), getattr(dataset, 'frame', 0)
         p, s, im0 = path, '', im0s.copy()
 
         p = Path(p)  # to Path
@@ -106,7 +100,7 @@ def run(filename, # include path of the file
                 line = str(cls.item()) + '; ' + ','.join(map(str,xywh)) + ';'
                 ret_msg += str(line)
 
-    print(f'Done. ({time.time() - t0:.3f}s)')
+    # print(f'Done. ({time.time() - t0:.3f}s)')
     return ret_msg
 
 def parse_opt():
@@ -118,8 +112,9 @@ def parse_opt():
     return opt
 
 def main(cmd_options):
-    print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
+    # print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
     filename = ''
+    modelLoad()
     mesg = run(filename, **vars(cmd_options))
     print('Inference results: \n', mesg)
 
