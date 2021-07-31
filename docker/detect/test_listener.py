@@ -25,13 +25,13 @@ local_mqttclient = mqtt.Client()
 def on_connect_local(client, userdata, flags, rc):
     if rc == 0:
         print("Successfully connected to local broker with rc: " + str(rc))
-        client.subscribe(PUBLISH_TOPIC)
+        local_mqttclient.subscribe(PUBLISH_TOPIC)
     else: 
         print("Error - Couldn't connect to local broker, rc code: " + str(rc))
 
 def on_disconnect_local(client, userdata, flags, rc): 
-  print("Disconnected from local broker, result code" + str(rc))
-  local_sender_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
+    print("Disconnected from local broker, result code" + str(rc))
+    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 
 def on_publish_local(client, userdata, msg_id):
     print("Message successfully published: {}".format(msg_id))
