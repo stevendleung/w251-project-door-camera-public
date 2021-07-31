@@ -13,21 +13,24 @@ FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
 from models.experimental import attempt_load
-from utils.datasets import LoadStreams, LoadImages
+# from utils.datasets import LoadImages
 from utils.augmentations import letterbox
-from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
-    apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
-from utils.plots import colors, plot_one_box
-from utils.torch_utils import select_device, load_classifier, time_synchronized
+from utils.general import check_img_size, colorstr, non_max_suppression, scale_coords, xyxy2xywh, set_logging
+from utils.torch_utils import select_device, time_synchronized
 
 global cmd_options  # used by the param parsing
+global model 
+
+def modelLoad():
+    half = True
+    
 
 @torch.no_grad()
 def run(filename, # include path of the file
         weights='yolov5s.pt',  # model.pt path(s)
         source='data/images',  # file/dir/URL/glob, 0 for webcam
         imgsz=640,  # inference size (pixels)
-        half=False,  # use FP16 half-precision inference
+        half=True,  # use FP16 half-precision inference
         ):
     ret_msg = ''
 
@@ -44,23 +47,20 @@ def run(filename, # include path of the file
     if half:
         model.half()  # to FP16
 
-    # Dataloader
-    # # Read image
-    # self.count += 1
+    # Read image
     path = source
     img0 = cv2.imread(path)  # BGR
     im0s = img0
     assert img0 is not None, 'Image Not Found ' + path
-    # print(f'image {self.count}/{self.nf} {path}: ', end='')
 
     # # Padded resize
     img = letterbox(img0, imgsz, stride=stride)[0]
 
-    # # Convert
+    # Convert
     img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
     img = np.ascontiguousarray(img)
 
-    dataset = LoadImages(source, img_size=imgsz, stride=stride)
+    # dataset = LoadImages(source, img_size=imgsz, stride=stride)
     bs = 1  # batch_size
 
     # Run inference
@@ -84,7 +84,8 @@ def run(filename, # include path of the file
 
     # Process detections
     for i, det in enumerate(pred):  # detections per image
-        p, s, im0, frame = path, '', im0s.copy(), getattr(dataset, 'frame', 0)
+        # p, s, im0, frame = path, '', im0s.copy(), getattr(dataset, 'frame', 0)
+        p, s, im0 = path, '', im0s.copy()
 
         p = Path(p)  # to Path
         s += '%gx%g ' % img.shape[2:]  # print string
@@ -118,7 +119,6 @@ def parse_opt():
 
 def main(cmd_options):
     print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
-    # check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
     mesg = run(filename, **vars(cmd_options))
     print('Inference results: \n', mesg)
