@@ -71,7 +71,7 @@ def run(filename, # include path of the file
     # print(f'image {self.count}/{self.nf} {path}: ', end='')
 
     # # Padded resize
-    img = letterbox(img0, simgsz, stride=stride)[0]
+    img = letterbox(img0, imgsz, stride=stride)[0]
 
     # # Convert
     img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
