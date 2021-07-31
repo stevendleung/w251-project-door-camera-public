@@ -14,9 +14,10 @@ from pathlib import Path
 # LOCAL_MQTT_HOST= "mosquitto-service"
 LOCAL_MQTT_HOST= "localhost"
 LOCAL_MQTT_PORT= 1883
-#LOCAL_IMAGE_TOPIC= "image_topic"
+LOCAL_IMAGE_TOPIC= "image_topic"
 LOCAL_NOTIF_TOPIC= "model_output_topic"
-#PUBLISH_TOPIC = LOCAL_IMAGE_TOPIC
+PUBLISH_TOPIC = LOCAL_IMAGE_TOPIC
+#PUBLISH_TOPIC = LOCAL_NOTIF_TOPIC
 
 local_mqttclient = mqtt.Client()
 
@@ -24,7 +25,7 @@ local_mqttclient = mqtt.Client()
 def on_connect_local(client, userdata, flags, rc):
     if rc == 0:
         print("Successfully connected to local broker with rc: " + str(rc))
-        client.subscribe(LOCAL_NOTIF_TOPIC)
+        client.subscribe(PUBLISH_TOPIC)
     else: 
         print("Error - Couldn't connect to local broker, rc code: " + str(rc))
 

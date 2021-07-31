@@ -94,30 +94,29 @@ events = [
 ]
 
 # Mosquitto 
-# LOCAL_MQTT_HOST= "mosquitto-service"
-LOCAL_MQTT_HOST= "localhost"
-LOCAL_MQTT_PORT= 1883
-LOCAL_IMAGE_TOPIC= "image_topic"
-#LOCAL_NOTIF_TOPIC= "model_output_topic"
+# LOCAL_MQTT_HOST = "mosquitto-service"
+LOCAL_MQTT_HOST = "localhost"
+LOCAL_MQTT_PORT = 1883
+LOCAL_IMAGE_TOPIC = "image_topic"
+#LOCAL_NOTIF_TOPIC = "model_output_topic"
 PUBLISH_TOPIC = LOCAL_IMAGE_TOPIC
+#PUBLISH_TOPIC = LOCAL_NOTIF_TOPIC
 
 local_mqttclient = mqtt.Client()
 
-# Define Local Sender MQTT callbacks
+# Setup Local MQTT callbacks
 def on_connect_local(client, userdata, flags, rc):
-  print("connected to ", PUBLISH_TOPIC, " with rc: " + str(rc))
+    print("connected to ", PUBLISH_TOPIC, " with rc: " + str(rc))
+    publishDataToModel(PUBLISH_TOPIC)
 
 def on_disconnect_local(client, userdata, flags, rc): 
-  print("Disconnected from local broker, result code" + str(rc))
-  local_sender_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
+    print("Disconnected from local broker, result code" + str(rc))
+    global local_mqttclient 
+    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 
 def on_publish_local(client, userdata, msg_id):
     print("Message successfully published: {}".format(msg_id))
 
-# Make connections to local broker
-local_mqttclient.on_connect = on_connect_local
-local_mqttclient.on_publish = on_publish_local
-local_mqttclient.on_disconnect = on_disconnect_local
 vid_source = 1
 
 # Publishing message to the Notification Queue as an output from the model
@@ -142,11 +141,12 @@ def publishDataToModel(topicName):
     try:
         path = "/data/door_cam_images/images/"
         # publish all events to the queue
-        for event in events:
+        for event in events[0]:
             for ndx in range(len(event)):
                 filename=event[ndx]
                 mesg = "{};{};{}".format(vid_source, path, filename)
                 local_mqttclient.publish(topicName, mesg)
+                print("Message written: ", mesg)
                 # messages are written once every second; sleep for 80th percent of time
                 time.sleep(0.8)
             
@@ -157,9 +157,14 @@ def publishDataToModel(topicName):
       print("Unexpected error:", sys.exc_info()[0])
 
 def run():
-    # connect to the MQTT HOST
+    # Make connections to local broker
+    global local_mqttclient 
+
+    local_mqttclient.on_connect = on_connect_local
+    local_mqttclient.on_publish = on_publish_local
+    local_mqttclient.on_disconnect = on_disconnect_local
+
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
-    publishDataToModel(LOCAL_IMAGE_TOPIC)
 
 def main():
     run()
