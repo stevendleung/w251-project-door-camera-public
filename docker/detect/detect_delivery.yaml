@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: detect-delivery
-        image: jroshanucb/detect_delivery
+        image: jroshanucb/detect_delivery:latest
         volumeMounts:
         - mountPath: /data/door_cam_images
           name: door-cam-images
@@ -24,3 +24,4 @@ spec:
       - name: door-cam-images
         hostPath:
           path: /data/door_cam_images
+
