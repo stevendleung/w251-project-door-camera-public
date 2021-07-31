@@ -13,7 +13,7 @@ from pathlib import Path
 # Mosquitto 
 # LOCAL_MQTT_HOST= "mosquitto-service"
 LOCAL_MQTT_HOST= "localhost"
-LOCAL_MQTT_PORT= 1883
+LOCAL_MQTT_PORT= 31126
 LOCAL_IMAGE_TOPIC= "image_topic"
 LOCAL_NOTIF_TOPIC= "model_output_topic"
 LISTEN_TO_TOPIC = LOCAL_IMAGE_TOPIC
