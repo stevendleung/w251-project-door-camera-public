@@ -33,7 +33,7 @@ def run(filename, # include path of the file
 
     # Initialize
     set_logging()
-    device = select_device(device)
+    device = select_device('')
     half &= device.type != 'cpu'  # half precision only supported on CUDA
 
     # Load model
