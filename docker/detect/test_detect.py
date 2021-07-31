@@ -49,6 +49,7 @@ def run(filename, # include path of the file
         ):
     global model
     ret_msg = ''
+    device = select_device('')
 
     # Read image
     path = source
