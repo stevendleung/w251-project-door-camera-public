@@ -122,8 +122,8 @@ def run(filename, # include path of the file
             # Write results
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                ret_msg += str(line)
+                line = str(cls).split('(')[0] + ', ' + str(*xywh)
+                ret_msg += line
 
     print(f'Done. ({time.time() - t0:.3f}s)')
     return ret_msg
@@ -138,7 +138,7 @@ def parse_opt():
 
 def main(cmd_options):
     print(colorstr('detect: ') + ', '.join(f'{k}={v}' for k, v in vars(cmd_options).items()))
-    check_requirements(exclude=('tensorboard', 'thop'))
+    # check_requirements(exclude=('tensorboard', 'thop'))
     filename = ''
     mesg = run(filename, **vars(cmd_options))
     print('Inference results: \n', mesg)
