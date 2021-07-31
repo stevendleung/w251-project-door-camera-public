@@ -140,7 +140,7 @@ def publishDataToModel(topicName):
     try:
         path = "/data/door_cam_images/images/"
         # publish all events to the queue
-        for event in events[0]:
+        for event in events:
             for ndx in range(len(event)):
                 filename=event[ndx]
                 mesg = "{};{};{}".format(vid_source, path, filename)
