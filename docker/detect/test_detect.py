@@ -126,7 +126,7 @@ def run(filename, # include path of the file
                 ret_msg += str(line)
 
     print(f'Done. ({time.time() - t0:.3f}s)')
-    return ret_mesg
+    return ret_msg
 
 def parse_opt():
     parser = argparse.ArgumentParser()
