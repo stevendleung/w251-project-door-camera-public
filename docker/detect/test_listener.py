@@ -46,7 +46,7 @@ def on_message(client, userdata, msg):
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--topic', nargs='+', type=str, default='image_topic', help='image_topic and model_output_topic are topic options')
+    parser.add_argument('--topic', type=str, default='image_topic', help='image_topic and model_output_topic are topic options')
     opt = parser.parse_args()
     return opt
 
