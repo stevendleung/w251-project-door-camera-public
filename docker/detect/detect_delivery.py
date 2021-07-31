@@ -59,8 +59,14 @@ def on_disconnect_local(client, userdata, flags, rc):
     print("Disconnected from local broker, result code" + str(rc))
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 
-def on_publish_local(client, userdata, msg_id):
+def on_publish_local(client, userdata, msg_id, rc):
     print("Message successfully published: {}".format(msg_id))
+
+def on_subscribe_local(client, userdata, msg_id, rc):
+    if rc == 0:
+        print("Successfully subscribed to local topic with rc: " + str(rc))
+    else:
+        print("Failed to subscribe to local topic with rc: " + str(rc))
 
 def modelLoad(
         weights='yolov5s.pt',  # model.pt path(s)
@@ -203,6 +209,7 @@ def main(cmd_opts):
     local_mqttclient.on_publish = on_publish_local
     local_mqttclient.on_disconnect = on_disconnect_local
     local_mqttclient.on_message = on_message
+    local_mqttclient.on_subscribe = on_subscribe_local
     local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
     local_mqttclient.loop_forever()
 
