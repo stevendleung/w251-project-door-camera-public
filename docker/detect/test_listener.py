@@ -55,6 +55,7 @@ def main(topic='image_topic',  # default topic
     # Assign topic name to the global variable
     global LISTEN_TO_TOPIC
     LISTEN_TO_TOPIC = topic
+    print("Topic name listening to: ", LISTEN_TO_TOPIC)
     # linking the CallBacks
     local_mqttclient.on_connect = on_connect_local
     local_mqttclient.on_publish = on_publish_local
