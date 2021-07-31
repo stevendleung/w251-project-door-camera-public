@@ -140,7 +140,7 @@ vid_source = 1
 
 def publishDataToModel(topicName):
     try:
-        path = "/home/data"
+        path = "/data/door_cam_images/images/"
         # publish all events to the queue
         for event in events:
             for ndx in range(len(event)):
