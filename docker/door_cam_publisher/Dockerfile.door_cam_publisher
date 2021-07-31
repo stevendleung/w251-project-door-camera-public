@@ -11,8 +11,8 @@ RUN pip3 install paho-mqtt
 
 # Copy your listener.py file into the container
 COPY publisher_vid_to_image.py ./publisher_vid_to_image.py
+COPY publisher_vid_to_image_l.py ./publisher_vid_to_image_l.py
 #RUN mkdir /door_cam_images
 
 CMD python3 publisher_vid_to_image.py
-
 
