@@ -36,9 +36,9 @@ def on_disconnect_local(client, userdata, flags, rc):
 def on_publish_local(client, userdata, msg_id, rc):
     print("Message successfully published: {}".format(msg_id))
 
-def on_subscribe_local(client, userdata, msg_id):
+def on_subscribe_local(client, userdata, msg_id, rc):
     if rc == 0:
-        print("Successfully subscriber to local topic with rc: " + str(rc))
+        print("Successfully subscribed to local topic with rc: " + str(rc))
     else:
         print("Failed to subscribe to local topic with rc: " + str(rc))
 
