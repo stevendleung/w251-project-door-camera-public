@@ -131,6 +131,7 @@ def run(filename, # include path of the file
     t2 = time_synchronized()
 
     # Process detections
+    ret_class = ''
     for i, det in enumerate(pred):  # detections per image
         p, s, im0 = path, '', im0s.copy()
 
@@ -142,10 +143,11 @@ def run(filename, # include path of the file
             # get the predictions to return
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                line = str(cls.item()) + '; ' + ','.join(map(str,xywh)) + ';'
+                ret_class += str(cls.item()) + ";"
+                line = ','.join(map(str,xywh)) + ';'
                 ret_msg += str(line)
 
-    return ret_msg
+    return ret_class, ret_msg
 
 # Publishing message to the Notification Queue as an output from the model
 # Message Structure:
@@ -175,16 +177,17 @@ def on_message(client, userdata, msg):
     mesg_items = new_msg.split(';')
     vid_source = mesg_items[0]
     type_of_report = 1
-    classification = 0
+    classification = ''
     person_name = ''
     filename = mesg_items[1] + mesg_items[2]
     face_locations = '0,0,0,0'
 
-    mesg = run(filename, **vars(cmd_options))
+    ret_class, coords = run(filename, **vars(cmd_options))
+    classification = ret_class.split(";")[0]
 
     # publish the message to the notification queue
-    model_output_msg = "{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                person_name, mesg)
+    model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
+                                                person_name, filename, coords)
     print("Message to be written to the topic: ", model_output_msg)
     local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
