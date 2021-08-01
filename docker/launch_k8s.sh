@@ -33,3 +33,6 @@ kubectl get pods
 # build docker container
 # push docker container
 # run k8s  
+
+#SSH into k8s docker container
+# kubectl exec --stdin --tty POD_NAME -- /bin/bash

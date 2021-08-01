@@ -42,6 +42,8 @@ image_count = 0
 #get frame per second of camera
 fps = cap.get(cv2.CAP_PROP_FPS)
 
+vid_source = 0
+path = "/data/door_cam_images/images/"
 
 while cap.isOpened():
 
@@ -51,11 +53,14 @@ while cap.isOpened():
     if ret:
         #take a frame every second- modify for different rate
         if frame_count % fps == 0:
-            path = "/data/door_cam_images/frame{}.jpg".format(image_count)
-            cv2.imwrite(path, frame)
-            local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
+            filename = "frame{}.jpg".format(image_count)
+            cv2.imwrite(path + filename, frame)
+
+            mesg = "{};{};{}".format(vid_source, path, filename)
+            #publish the message
+            local_mqttclient.publish(LOCAL_MQTT_TOPIC,mesg)
             image_count += 1
-        #publish the message
+        
         
             print('Image processed')        
         frame_count += 1

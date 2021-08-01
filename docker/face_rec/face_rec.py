@@ -91,36 +91,37 @@ def on_publish_local(client, userdata, msg_id):
 # Run model and transmit on message receipt
 def on_message(client, userdata, msg):
   '''Action to perform upon receiving message from broker. Takes image path message and runs face_rec model on that image. Publishes model output to new topic.'''
-  global previous_msg
-  current_msg = msg.payload.decode("utf-8")
-  
-  if current_msg != previous_msg:
-    print(current_msg)
-    try:
-      face_names_locations = face_rec_process(current_msg)
-      face_names_locations
-      vid_source = 0
-      type_of_report = 0
-      
-      #Classification logic- for now only dealing with case of single person on camera
-      if len(face_names_locations[0]) == 0:
-        classification = 1
-        person_name = ''
-      elif 'Unknown' in face_names_locations[0]:
-        classification = 1
-        person_name = ''
-      else:
-        classification = 0
-        person_name = face_names_locations[0][0]
 
-      face_locations = face_names_locations[1]
-      print(datetime.now())
-      model_output_msg = "{};{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                 person_name, current_msg, face_locations,str(datetime.now()))
-      local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC,model_output_msg)
-    except:
-      print("Unexpected error:", sys.exc_info()[0])
-  previous_msg = current_msg
+  try:
+    full_msg = msg.payload.decode("utf-8")
+    print(full_msg)
+
+    vid_source = full_msg.split(';')[0]
+    path = full_msg.split(';')[1]
+    filename = full_msg.split(';')[2]
+    
+    face_names_locations = face_rec_process(path + filename)
+    type_of_report = 0
+      
+    #Classification logic- for now only dealing with case of single person on camera
+    if len(face_names_locations[0]) == 0:
+      return
+    elif 'Unknown' in face_names_locations[0]:
+      classification = 1
+      person_name = ''
+    else:
+      classification = 0
+      person_name = face_names_locations[0][0]
+
+    face_locations = face_names_locations[1]
+
+    model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
+                                                 person_name, filename, face_locations)
+    local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC,model_output_msg)     
+
+  except:
+    print("Unexpected error:", sys.exc_info()[0])
+
   
 
   #Current implementation is to check if current message is different than previous message before
@@ -132,7 +133,6 @@ def on_message(client, userdata, msg):
 local_mqttclient.on_connect = on_connect_local
 
 local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
-previous_msg= ''
 local_mqttclient.on_message = on_message
 local_mqttclient.on_publish = on_publish_local
 local_mqttclient.on_disconnect = on_disconnect_local

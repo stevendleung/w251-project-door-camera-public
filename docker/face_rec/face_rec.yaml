@@ -16,11 +16,11 @@ spec:
       - name: face-rec
         image: stevendleung/face_rec
         volumeMounts:
-        - mountPath: /data/door_cam_images
+        - mountPath: /data/door_cam_images/images
           name: door-cam-images
         securityContext:
           privileged: true
       volumes:
       - name: door-cam-images
         hostPath:
-          path: /data/door_cam_images
+          path: /data/door_cam_images/images
