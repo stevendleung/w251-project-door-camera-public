@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import os
 from twilio.rest import Client
 
-LOCAL_MQTT_HOST= "mosquitto-service"
+LOCAL_MQTT_HOST= "mosquitto"
 LOCAL_MQTT_PORT= 1883
 LOCAL_MQTT_TOPIC= "model_output_topic"
 
@@ -21,7 +21,12 @@ def on_disconnect_local(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
   try:
-
+#    TEST PIPELINE TIMING HERE- logs are delayed but writing txt is not
+#    with open("timefile.txt", "w") as file:
+#      time = str(datetime.now()) + ' ' + str(msg.payload)
+#      file.write(time)
+#      file.close()
+    
     print("message: ", str(msg.payload))
     #print("message received: ",str(msg.payload.decode("utf-8"))) 
   except:

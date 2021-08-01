@@ -5,7 +5,7 @@ import sys
 import time
   
 
-LOCAL_MQTT_HOST="mosquitto-service"
+LOCAL_MQTT_HOST="mosquitto"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="image_topic"
 
@@ -39,6 +39,9 @@ cap = cv2.VideoCapture(0)
 
 frame_count = 0
 image_count = 0
+#get frame per second of camera
+fps = cap.get(cv2.CAP_PROP_FPS)
+
 
 while cap.isOpened():
 
@@ -46,14 +49,15 @@ while cap.isOpened():
     ret, frame = cap.read()
 
     if ret:
-        if frame_count % 30 == 0:
+        #take a frame every second- modify for different rate
+        if frame_count % fps == 0:
             path = "/data/door_cam_images/frame{}.jpg".format(image_count)
             cv2.imwrite(path, frame)
-
+            local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
             image_count += 1
         #publish the message
-        local_mqttclient.publish(LOCAL_MQTT_TOPIC,path)
-        print('Image processed')        
+        
+            print('Image processed')        
         frame_count += 1
     else:
         cap.release()
