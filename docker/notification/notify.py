@@ -24,6 +24,7 @@ local_mqttclient = mqtt.Client()
 registeredUsers = None
 # All cached messages
 allMessages = [[],[]]
+isActivityOn = False
 
 # Define Local Sender MQTT callbacks
 def on_connect_local(client, userdata, flags, rc):
@@ -76,37 +77,39 @@ def buildMessage(ndx, mesg):
             if ndx == 0:
                 text_msg = "Known Person at door: " + mesg[0]['person_name']
             else:
-                text_msg = "Delivery person at door"
+                text_msg = "Non-Delivery person at door"
         else:
             if ndx == 0:
                 text_msg = "Unknown Person at door"
             else:
-                text_msg = "Non-Delivery person at door"
+                text_msg = "Delivery person at door"
     return text_msg
 
 def sendNotification():
     global registeredUsers
     global allMessages
+    global isActivityOn
     try:
-
-        # get registered user details
-        print("All Messages: ", allMessages[1])
-        account_sid = registeredUsers['account_sid']
-        auth_token = registeredUsers['token']
-        phone_number = registeredUsers['phone_number']
-        for (ndx,item) in enumerate(allMessages):
-#            client = Client(account_sid, auth_token)
-            txt_msg = buildMessage(ndx, item)
-#            message = client.messages \
-#                        .create(
-#                            body=txt_msg,
-#                            from_='+15017122661',
-#                            to=phone_number
-#                        )
-            #print("message: ", str(message.payload))
-            print("message: ", txt_msg)
-        # Clear Cache
-        allMessages = [[],[]]
+        if (isActivityOn == True):
+            # get registered user details
+            isActivityOn = False
+            print("All Messages: ", allMessages[1])
+            account_sid = registeredUsers['account_sid']
+            auth_token = registeredUsers['token']
+            phone_number = registeredUsers['phone_number']
+            for (ndx,item) in enumerate(allMessages):
+            client = Client(account_sid, auth_token)
+                txt_msg = buildMessage(ndx, item)
+            message = client.messages \
+                        .create(
+                            body=txt_msg,
+                            from_='+15017122661',
+                            to=phone_number
+                        )
+                print("message: ", str(message.payload))
+                print("message: ", txt_msg)
+            # Clear Cache
+            allMessages = [[],[]]
     except:
         print("Unexpected error:", sys.exc_info()[0])
 
@@ -125,14 +128,15 @@ def processMessage(new_msg):
 def runScheduler():
     # Start the scheduler
     sched = BackgroundScheduler()
-    sched.add_job(sendNotification, 'interval', seconds=5)
+    sched.add_job(sendNotification, 'interval', seconds=20)
     sched.start()
 
 def on_message(client, userdata, msg):
     # parse the input message
+    global isActivityOn
     new_msg = msg.payload.decode("utf-8")
     print("Message Received: ", new_msg)
-
+    isActivityOn = True
     flag = processMessage(new_msg)
 
     return
