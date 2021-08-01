@@ -21,7 +21,7 @@ kubectl apply -f mosquitto/mosquittoService.yaml # Service - allows across conta
 kubectl apply -f door_cam_publisher/door_cam_publisher.yaml
 kubectl apply -f face_rec/face_rec.yaml
 kubectl apply -f face_rec_listener_test/face_rec_listener_test.yaml #TEMP
-kubectl apply -f notification/notification.yaml
+#kubectl apply -f notification/notification.yaml
 # kubectl apply -f face_detector.yaml #TEMP
 # kubectl apply -f yolov5.yaml
 kubectl get pods 
