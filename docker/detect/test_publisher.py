@@ -4,7 +4,7 @@ import paho.mqtt.client as mqtt
 import sys
 from datetime import datetime, timedelta
 import os
-import secrets
+import random
 
 import argparse
 import time
@@ -149,8 +149,8 @@ def publishDataToModel(topicName):
                 # messages are written once every second; sleep for 80th percent of time
                 time.sleep(0.8)
             
-            # after every event, wait for a random amount of time (5 seconds for testing)
-            random_sleep_time = secrets.randbelow(5)
+            # after every event, wait for a random amount of time (between 15 and 20 seconds)
+            random_sleep_time = random.randint(8, 14)
             time.sleep(random_sleep_time)
     except:
       print("Unexpected error:", sys.exc_info()[0])
