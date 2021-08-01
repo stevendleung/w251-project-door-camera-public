@@ -12,7 +12,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from twilio.rest import Client
 
 # Mosquitto 
-LOCAL_MQTT_HOST= "mosquitto-service"
+# LOCAL_MQTT_HOST= "mosquitto-service"
+LOCAL_MQTT_HOST= "mosquitto"
 # LOCAL_MQTT_HOST= "localhost"
 # LOCAL_MQTT_PORT= 31126
 LOCAL_MQTT_PORT= 1883
