@@ -1,0 +1,15 @@
+FROM jroshanucb/w251_project_yolov5:2
+# this docker image is created from l4t-pytorch:r32.4.4-pth1.6-py3 with yolov5 preinstalled along with necessary libraries
+
+ENV PYTHONUNBUFFERED=1
+
+# adding mqtt service
+RUN pip3 install paho-mqtt
+RUN pip3 install apscheduler
+RUN pip3 install twilio
+
+# Copy your listener.py file into the container
+COPY notify.py /home/notify.py
+
+CMD python3 /home/notify.py --users '/data/RegisteredUsers.json'  --topic 'model_output_topic'
+
