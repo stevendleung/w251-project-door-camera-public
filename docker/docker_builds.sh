@@ -26,3 +26,4 @@ docker push jramirez0508/detector
 # Notification
 cd notification && docker build --no-cache -t jramirez0508/notification -f Dockerfile.notification . && docker push jramirez0508/notification && cd ..
 
+docker run -it -p 1883:1883 -v /home/steven/w251-project-door-camera/docker/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto

@@ -69,7 +69,7 @@ return list of names and list of coordinates of face. If no person, returns empt
     return (face_names, face_locations)
 
 #Mosquitto 
-LOCAL_MQTT_HOST= "mosquitto-service"
+LOCAL_MQTT_HOST= "mosquitto"
 LOCAL_MQTT_PORT= 1883
 LOCAL_SENDER_MQTT_TOPIC= "image_topic"
 LOCAL_RECEIVER_MQTT_TOPIC= "model_output_topic"
@@ -91,39 +91,42 @@ def on_publish_local(client, userdata, msg_id):
 # Run model and transmit on message receipt
 def on_message(client, userdata, msg):
   '''Action to perform upon receiving message from broker. Takes image path message and runs face_rec model on that image. Publishes model output to new topic.'''
-  
-  #Current implementation is to check if current message is different than previous message before
-  #running model. This is because the camera is sending a message for every frame (even though we 
-  #are only capturing images every 30 frames. This is an issue with MQTT that we may need to work through
   global previous_msg
   current_msg = msg.payload.decode("utf-8")
-  print(current_msg)
+  
   if current_msg != previous_msg:
+    print(current_msg)
     try:
       face_names_locations = face_rec_process(current_msg)
-      
+      face_names_locations
       vid_source = 0
-      type_of_report = 'face_rec'
+      type_of_report = 0
       
       #Classification logic- for now only dealing with case of single person on camera
       if len(face_names_locations[0]) == 0:
-        classification = 'None'
+        classification = 1
         person_name = ''
       elif 'Unknown' in face_names_locations[0]:
-        classification = 'Unknown'
+        classification = 1
         person_name = ''
       else:
-        classification = 'Known Person'
+        classification = 0
         person_name = face_names_locations[0][0]
 
       face_locations = face_names_locations[1]
-
-      model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                 person_name, current_msg, face_locations)
+      print(datetime.now())
+      model_output_msg = "{};{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
+                                                 person_name, current_msg, face_locations,str(datetime.now()))
       local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC,model_output_msg)
     except:
       print("Unexpected error:", sys.exc_info()[0])
   previous_msg = current_msg
+  
+
+  #Current implementation is to check if current message is different than previous message before
+  #running model. This is because the camera is sending a message for every frame (even though we 
+  #are only capturing images every 30 frames. This is an issue with MQTT that we may need to work through
+
   
 # Make connections to local broker
 local_mqttclient.on_connect = on_connect_local
