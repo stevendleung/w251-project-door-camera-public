@@ -5,14 +5,11 @@ ENV PYTHONUNBUFFERED=1
 
 # adding mqtt service
 RUN pip3 install paho-mqtt
+RUN pip3 install apscheduler
+RUN pip3 install twilio
 
 # Copy your listener.py file into the container
-COPY detect_delivery.py /home/detect_delivery.py
-COPY best.pt /home/best.pt
-RUN mkdir -p /home/models
-RUN mkdir -p /home/utils
-COPY models/ /home/models/
-COPY utils/ /home/utils/
+COPY notify.py /home/notify.py
 
-CMD python3 /home/detect_delivery.py --source '/data/door_cam_images/images/'  --weights '/home/best.pt'
+CMD python3 /home/notify.py --users '/data/RegisteredUsers.json'  --topic 'model_output_topic'
 

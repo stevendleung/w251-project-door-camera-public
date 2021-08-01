@@ -47,10 +47,11 @@ local_mqttclient = mqtt.Client()
 
 # callback functions for MQTT setup
 def on_connect_local(client, userdata, flags, rc): 
-    global connected_flag
+    # get the mqttclient
+    global local_mqttclient
     if rc == 0:
-        print("Successfully connected to local broker with rc: " + str(rc))
-        client.subscribe(LOCAL_MQTT_TOPIC_IN)
+        local_mqttclient.subscribe(LOCAL_MQTT_TOPIC_IN)
+        print("Successfully connected to local broker with rc: " + str(rc) + " & subscribed to the topic: ", LOCAL_MQTT_TOPIC_IN)
     else: 
         print("Error - Couldn't connect to local broker, rc code: " + str(rc))
 
@@ -60,6 +61,12 @@ def on_disconnect_local(client, userdata, flags, rc):
 
 def on_publish_local(client, userdata, msg_id):
     print("Message successfully published: {}".format(msg_id))
+
+def on_subscribe_local(client, userdata, msg_id, rc):
+    if rc == 0:
+        print("Successfully subscribed to local topic with rc: " + str(rc))
+    else:
+        print("Failed to subscribe to local topic with rc: " + str(rc))
 
 def modelLoad(
         weights='yolov5s.pt',  # model.pt path(s)
@@ -124,6 +131,7 @@ def run(filename, # include path of the file
     t2 = time_synchronized()
 
     # Process detections
+    ret_class = ''
     for i, det in enumerate(pred):  # detections per image
         p, s, im0 = path, '', im0s.copy()
 
@@ -135,10 +143,11 @@ def run(filename, # include path of the file
             # get the predictions to return
             for *xyxy, conf, cls in reversed(det):
                 xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                line = str(cls.item()) + '; ' + ','.join(map(str,xywh)) + ';'
+                ret_class += str(cls.item()) + ";"
+                line = ','.join(map(str,xywh)) + ';'
                 ret_msg += str(line)
 
-    return ret_msg
+    return ret_class, ret_msg
 
 # Publishing message to the Notification Queue as an output from the model
 # Message Structure:
@@ -162,26 +171,30 @@ def on_message(client, userdata, msg):
     # Action to perform upon receiving message from video streamer. Takes image path message and runs delivery/no-delivery model. Output is sent to notification
     global cmd_options
     # parse the input message
+    print("Received Message: ", msg, " from ", LOCAL_MQTT_TOPIC_IN)
     new_msg = msg.payload.decode("utf-8")
+    print("Received Message: ", new_msg)
     mesg_items = new_msg.split(';')
     vid_source = mesg_items[0]
     type_of_report = 1
-    classification = 0
+    classification = ''
     person_name = ''
     filename = mesg_items[1] + mesg_items[2]
     face_locations = '0,0,0,0'
 
-    mesg = run(filename, **vars(cmd_options))
+    ret_class, coords = run(filename, **vars(cmd_options))
+    classification = ret_class.split(";")[0]
 
     # publish the message to the notification queue
     model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                person_name, current_msg, face_locations)
-    local_mqttclient.publish(LOCAL_RECEIVER_MQTT_TOPIC, model_output_msg)
+                                                person_name, filename, coords)
+    print("Message to be written to the topic: ", model_output_msg)
+    local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--source', type=str, default='data/images', help='file/dir/URL/glob, 0 for webcam')
+    parser.add_argument('--source', type=str, default='/data/door_cam_images/images/', help='file/dir/URL/glob, 0 for webcam')
     parser.add_argument('--weights', nargs='+', type=str, default='yolov5s.pt', help='model.pt path(s)')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     opt = parser.parse_args()
@@ -196,10 +209,11 @@ def main(cmd_opts):
 
     # linking the CallBacks
     local_mqttclient.on_connect = on_connect_local
-    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
     local_mqttclient.on_publish = on_publish_local
     local_mqttclient.on_disconnect = on_disconnect_local
     local_mqttclient.on_message = on_message
+    local_mqttclient.on_subscribe = on_subscribe_local
+    local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
     local_mqttclient.loop_forever()
 
 if __name__ == "__main__":
