@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: notify
-        image: stevendleung/notify:latest
+        image: jroshanucb/notify:latest
         volumeMounts:
         - mountPath: /data
           name: data
