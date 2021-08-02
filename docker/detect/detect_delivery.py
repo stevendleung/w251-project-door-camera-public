@@ -184,6 +184,9 @@ def on_message(client, userdata, msg):
     face_locations = '0,0,0,0'
 
     ret_class, coords = run(filename, **vars(cmd_options))
+
+    # just write the name without the path to notify
+    filename = mesg_items[2]
     classification = ret_class.split(";")[0]
 
     # publish only when someone is at the door i.e., model is able to identify any person and classified them
