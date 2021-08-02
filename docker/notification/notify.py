@@ -122,7 +122,7 @@ def sendNotification():
                 #                 to=phone_number
                 #             )
                 # print("message: ", str(message.payload))
-                file_handler.write(txt_msg)
+                fileHandler.write(txt_msg)
                 print("message: ", txt_msg)
                 print("Predicted List so far: *********************\n", predictedList, "*********************\n")
             # Clear Cache
