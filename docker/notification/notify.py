@@ -162,7 +162,7 @@ def on_message(client, userdata, msg):
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--topic', type=str, default='model_output_topic', help='use model_output_topic')
-    parser.add_argument('--users', type=str, default='/data/RegisteredUsers.json', help='get the registered users data')
+    parser.add_argument('--users', type=str, default='/home/nvidia/project/RegisteredUsers.json', help='get the registered users data')
     opt = parser.parse_args()
     return opt
 
