@@ -110,7 +110,7 @@ def sendNotification():
                 print("message: ", str(message.payload))
                 print("message: ", txt_msg)
             # Clear Cache
-            allMessages = [[],[]]
+              allMessages = [[],[]]
     except:
         print("Unexpected error:", sys.exc_info()[0])
 

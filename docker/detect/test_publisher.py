@@ -309,7 +309,7 @@ labels = [[1], [1], [0], [0], [1], [1], [1], [0], [0], [1], [0], [0], [0], [1], 
 
 # Mosquitto 
 # LOCAL_MQTT_HOST = "mosquitto-service"
-LOCAL_MQTT_HOST = "localhost"
+LOCAL_MQTT_HOST = "mosquitto"
 LOCAL_MQTT_PORT = 1883
 LOCAL_IMAGE_TOPIC = "image_topic"
 #LOCAL_NOTIF_TOPIC = "model_output_topic"

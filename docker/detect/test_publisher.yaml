@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: notify
+  name: test-publisher
 spec:
   selector:
     matchLabels:
-      app: notify
+      app: test-publisher
   replicas: 1 # tells deployment to run 1 pods matching the template
   template:
     metadata:
       labels:
-        app: notify
+        app: test-publisher
     spec:
       containers:
-      - name: notify
-        image: stevendleung/notify:latest
+      - name: detector
+        image: stevendleung/test-publisher
         volumeMounts:
-        - mountPath: /data
-          name: data
+        - mountPath: /data/door_cam_images/images
+          name: door-cam-images
         securityContext:
           privileged: true
       volumes:
-      - name: data
+      - name: door-cam-images
         hostPath:
-          path: /data
+          path: /data/door_cam_images/images
