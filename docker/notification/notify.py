@@ -105,7 +105,7 @@ def sendNotification():
         if (isActivityOn == True):
             if (fileHandler == None):
                 fname = "/home/nvidia/project/notify.txt"
-                fileHandler = open(fname, "a")
+                fileHandler = open(fname, "w")
             # get registered user details
             isActivityOn = False
             print("All Messages: ", allMessages)

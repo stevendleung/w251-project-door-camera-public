@@ -189,7 +189,7 @@ def on_message(client, userdata, msg):
 
     if (fileHandler == None):
         fname = "/home/nvidia/project/model_out.txt"
-        fileHandler = open(fname, "a")
+        fileHandler = open(fname, "w")
 
     ret_class, coords = run(filename, **vars(cmd_options))
 
