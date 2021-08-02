@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notify
+spec:
+  selector:
+    matchLabels:
+      app: notify
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: notify
+    spec:
+      containers:
+      - name: notify
+        image: jroshanucb/notify:latest
+        volumeMounts:
+        - mountPath: /data
+          name: data
+        - mountPath: /home/nvidia/project
+          name: nvidia-project
+        securityContext:
+          privileged: true
+      volumes:
+      - name: data
+        hostPath:
+          path: /data
+      - name: nvidia-project
+        hostPath:
+          path: /home/nvidia/project
