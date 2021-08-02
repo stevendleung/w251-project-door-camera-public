@@ -120,7 +120,7 @@ def sendNotification():
                 print("message: ", txt_msg)
                 print("Predicted List so far: *********************\n", predictedList, "*********************\n")
             # Clear Cache
-              allMessages = [[],[]]
+            allMessages = [[],[]]
     except:
         print("Unexpected error:", sys.exc_info()[0])
 
