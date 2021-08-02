@@ -33,6 +33,8 @@ from utils.torch_utils import select_device, time_synchronized
 
 model = None        # trained model to be loaded once
 cmd_options = None  # command options to be used in the MQTT message loop
+modelOuputMessages = []
+fileHandler = None
 
 # config for the MQTT messages
 # LOCAL_MQTT_HOST="mosquitto-service"
@@ -171,6 +173,8 @@ def run(filename, # include path of the file
 def on_message(client, userdata, msg):
     # Action to perform upon receiving message from video streamer. Takes image path message and runs delivery/no-delivery model. Output is sent to notification
     global cmd_options
+    global modelOuputMessages
+    global fileHandler
     # parse the input message
     print("Received Message: ", msg, " from ", LOCAL_MQTT_TOPIC_IN)
     new_msg = msg.payload.decode("utf-8")
@@ -182,6 +186,10 @@ def on_message(client, userdata, msg):
     person_name = ''
     filename = mesg_items[1] + mesg_items[2]
     face_locations = '0,0,0,0'
+
+    if (fileHandler == None):
+        fname = "/home/nvidia/project/model_out.txt"
+        fileHandler = open(fname, "a")
 
     ret_class, coords = run(filename, **vars(cmd_options))
 
@@ -195,6 +203,8 @@ def on_message(client, userdata, msg):
         model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
                                                     person_name, filename, coords)
         print("Message to be written to the topic: ", model_output_msg)
+        modelOuputMessages.append(model_output_msg)
+        file_handler.write(model_output_msg)
         local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
 
@@ -212,7 +222,7 @@ def main(cmd_opts):
     cmd_options = cmd_opts
     # Loop listener forever
     modelLoad(**vars(cmd_options))
-
+    
     # linking the CallBacks
     local_mqttclient.on_connect = on_connect_local
     local_mqttclient.on_publish = on_publish_local

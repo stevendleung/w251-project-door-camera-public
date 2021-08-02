@@ -364,7 +364,8 @@ def publishDataToModel(topicName):
                 time.sleep(0.8)
             
             # after every event, wait for a random amount of time (between 15 and 20 seconds)
-            random_sleep_time = random.randint(8, 14)
+            # random_sleep_time = random.randint(8, 14)
+            random_sleep_time = 60
             time.sleep(random_sleep_time)
     except:
       print("Unexpected error:", sys.exc_info()[0])

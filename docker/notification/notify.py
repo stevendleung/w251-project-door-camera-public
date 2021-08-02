@@ -27,6 +27,7 @@ registeredUsers = None
 allMessages = [[],[]]
 isActivityOn = False
 predictedList = []
+fileHandler = None
 
 # Define Local Sender MQTT callbacks
 def on_connect_local(client, userdata, flags, rc):
@@ -99,8 +100,12 @@ def sendNotification():
     global registeredUsers
     global allMessages
     global isActivityOn
+    global fileHandler
     try:
         if (isActivityOn == True):
+            if (fileHandler == None):
+                fname = "/home/nvidia/project/notify.txt"
+                fileHandler = open(fname, "a")
             # get registered user details
             isActivityOn = False
             print("All Messages: ", allMessages)
@@ -117,6 +122,7 @@ def sendNotification():
                 #                 to=phone_number
                 #             )
                 # print("message: ", str(message.payload))
+                file_handler.write(txt_msg)
                 print("message: ", txt_msg)
                 print("Predicted List so far: *********************\n", predictedList, "*********************\n")
             # Clear Cache
@@ -139,7 +145,8 @@ def processMessage(new_msg):
 def runScheduler():
     # Start the scheduler
     sched = BackgroundScheduler()
-    sched.add_job(sendNotification, 'interval', seconds=20)
+    # sched.add_job(sendNotification, 'interval', seconds=20)
+    sched.add_job(sendNotification, 'interval', seconds=60)
     sched.start()
 
 def on_message(client, userdata, msg):
