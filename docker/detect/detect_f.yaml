@@ -16,16 +16,11 @@ spec:
       - name: detect-delivery
         image: jroshanucb/detect_delivery:latest
         volumeMounts:
-        - mountPath: /data/door_cam_images
-          name: door-cam-images
         - mountPath: /home/nvidia/project
-          name: nvidia-project
+          name: home
         securityContext:
           privileged: true
       volumes:
-      - name: door-cam-images
-        hostPath:
-          path: /data/door_cam_images
-      - name: nvidia-project
+      - name: home
         hostPath:
           path: /home/nvidia/project

@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
       - name: detector
-        image: stevendleung/test-publisher
+        image: jroshanucb/test-publisher
         volumeMounts:
-        - mountPath: /data/door_cam_images/images
-          name: door-cam-images
+        - mountPath: /home/nvidia/project/images
+          name: home
         securityContext:
           privileged: true
       volumes:
-      - name: door-cam-images
+      - name: home
         hostPath:
-          path: /data/door_cam_images/images
+          path: /home/nvidia/project/images

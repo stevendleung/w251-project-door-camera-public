@@ -353,6 +353,7 @@ vid_source = 1
 def publishDataToModel(topicName):
     try:
         path = "/data/door_cam_images/images/"
+        path = "/home/nvidia/project/images/"
         # publish all events to the queue
         for event in events:
             for ndx in range(len(event)):

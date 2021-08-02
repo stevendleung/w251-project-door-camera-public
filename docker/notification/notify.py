@@ -104,7 +104,7 @@ def sendNotification():
     try:
         if (isActivityOn == True):
             if (fileHandler == None):
-                fname = "/data/door_cam_images/notify.txt"
+                fname = "/home/nvidia/project/notify.txt"
                 fileHandler = open(fname, "w")
             # get registered user details
             isActivityOn = False

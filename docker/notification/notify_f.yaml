@@ -16,16 +16,11 @@ spec:
       - name: notify
         image: jroshanucb/notify:latest
         volumeMounts:
-        - mountPath: /data
-          name: data
         - mountPath: /home/nvidia/project
-          name: nvidia-project
+          name: home
         securityContext:
           privileged: true
       volumes:
-      - name: data
-        hostPath:
-          path: /data
-      - name: nvidia-project
+      - name: home
         hostPath:
           path: /home/nvidia/project

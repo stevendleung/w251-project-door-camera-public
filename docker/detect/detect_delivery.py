@@ -188,7 +188,7 @@ def on_message(client, userdata, msg):
     face_locations = '0,0,0,0'
 
     if (fileHandler == None):
-        fname = "/data/door_cam_images/model_out.txt"
+        fname = "/home/nvidia/project/model_out.txt"
         fileHandler = open(fname, "w")
 
     ret_class, coords = run(filename, **vars(cmd_options))
