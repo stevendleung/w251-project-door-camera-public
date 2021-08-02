@@ -186,11 +186,13 @@ def on_message(client, userdata, msg):
     ret_class, coords = run(filename, **vars(cmd_options))
     classification = ret_class.split(";")[0]
 
-    # publish the message to the notification queue
-    model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
-                                                person_name, filename, coords)
-    print("Message to be written to the topic: ", model_output_msg)
-    local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
+    # publish only when someone is at the door i.e., model is able to identify any person and classified them
+    if (len(classification) > 0):
+        # publish the message to the notification queue
+        model_output_msg = "{};{};{};{};{};{}".format(vid_source, type_of_report, classification,
+                                                    person_name, filename, coords)
+        print("Message to be written to the topic: ", model_output_msg)
+        local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
 
 def parse_opt():

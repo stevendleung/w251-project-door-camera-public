@@ -99,14 +99,14 @@ def sendNotification():
             auth_token = registeredUsers['token']
             phone_number = registeredUsers['phone_number']
             for (ndx,item) in enumerate(allMessages):
-            client = Client(account_sid, auth_token)
+                client = Client(account_sid, auth_token)
                 txt_msg = buildMessage(ndx, item)
-            message = client.messages \
-                        .create(
-                            body=txt_msg,
-                            from_='+15017122661',
-                            to=phone_number
-                        )
+                message = client.messages \
+                            .create(
+                                body=txt_msg,
+                                from_='+15017122661',
+                                to=phone_number
+                            )
                 print("message: ", str(message.payload))
                 print("message: ", txt_msg)
             # Clear Cache
