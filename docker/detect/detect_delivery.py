@@ -204,7 +204,7 @@ def on_message(client, userdata, msg):
                                                     person_name, filename, coords)
         print("Message to be written to the topic: ", model_output_msg)
         modelOuputMessages.append(model_output_msg)
-        file_handler.write(model_output_msg)
+        fileHandler.write(model_output_msg)
         local_mqttclient.publish(LOCAL_MQTT_TOPIC_OUT, model_output_msg)
     return
 
