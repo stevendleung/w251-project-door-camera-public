@@ -26,6 +26,7 @@ registeredUsers = None
 # All cached messages
 allMessages = [[],[]]
 isActivityOn = False
+predictedList = []
 
 # Define Local Sender MQTT callbacks
 def on_connect_local(client, userdata, flags, rc):
@@ -67,6 +68,8 @@ def loadRegisteredUsers(users):
 def buildMessage(ndx, mesg):
     text_msg = ''    
     # create text based on the report type
+    filenames = ''
+    predicted = ''
     if len(mesg) > 0:
         class0, class1 = 0, 0
         for items in mesg:
@@ -74,16 +77,22 @@ def buildMessage(ndx, mesg):
                 class0 += 1
             else:
                 class1 += 1
+            filenames += items['file_name'] + "; "
         if class0 > class1:
             if ndx == 0:
+                predicted = 'FD:0'
                 text_msg = "Known Person at door: " + mesg[0]['person_name']
             else:
+                predicted = 'DND:0'
                 text_msg = "Non-Delivery person at door"
         else:
             if ndx == 0:
+                predicted = 'FD:1'
                 text_msg = "Unknown Person at door"
             else:
+                predicted = 'DND:1'
                 text_msg = "Delivery person at door"
+        predictedList.append((predicted, filenames))
     return text_msg
 
 def sendNotification():
@@ -94,21 +103,22 @@ def sendNotification():
         if (isActivityOn == True):
             # get registered user details
             isActivityOn = False
-            print("All Messages: ", allMessages[1])
+            print("All Messages: ", allMessages)
             account_sid = registeredUsers['account_sid']
             auth_token = registeredUsers['token']
             phone_number = registeredUsers['phone_number']
             for (ndx,item) in enumerate(allMessages):
-                client = Client(account_sid, auth_token)
                 txt_msg = buildMessage(ndx, item)
-                message = client.messages \
-                            .create(
-                                body=txt_msg,
-                                from_='+15017122661',
-                                to=phone_number
-                            )
-                print("message: ", str(message.payload))
+                # client = Client(account_sid, auth_token)
+                # message = client.messages \
+                #             .create(
+                #                 body=txt_msg,
+                #                 from_='+15017122661',
+                #                 to=phone_number
+                #             )
+                # print("message: ", str(message.payload))
                 print("message: ", txt_msg)
+                print("Predicted List so far: *********************\n", predictedList, "*********************\n")
             # Clear Cache
               allMessages = [[],[]]
     except:
