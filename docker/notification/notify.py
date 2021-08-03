@@ -99,30 +99,34 @@ def sendNotification():
     global registeredUsers
     global allMessages
     global isActivityOn
-    try:
-        if (isActivityOn == True):
+    #try:
+    if (isActivityOn == True):
             # get registered user details
-            isActivityOn = False
-            print("All Messages: ", allMessages)
-            account_sid = registeredUsers['account_sid']
-            auth_token = registeredUsers['token']
-            phone_number = registeredUsers['phone_number']
-            for (ndx,item) in enumerate(allMessages):
-                txt_msg = buildMessage(ndx, item)
-                client = Client(account_sid, auth_token)
-                message = client.messages \
+        isActivityOn = False
+
+        print("All Messages: ", allMessages)
+        account_sid = registeredUsers['account_sid']
+        auth_token = registeredUsers['token']
+        phone_number = registeredUsers['phone_number']
+        for (ndx,item) in enumerate(allMessages):
+            txt_msg = buildMessage(ndx, item)
+            if txt_msg == '':
+                continue
+            client = Client(account_sid, auth_token)
+            print("message: ", txt_msg)
+            message = client.messages \
                         .create(
                             body=txt_msg,
                             from_='+19257018931',
                             to=phone_number
                         )
 
-                print("message: ", txt_msg)
-                print("Predicted List so far: *********************\n", predictedList, "*********************\n")
+            
+            print("Predicted List so far: *********************\n", predictedList, "*********************\n")
             # Clear Cache
-            allMessages = [[],[]]
-    except:
-        print("Unexpected error:", sys.exc_info()[0])
+        allMessages = [[],[]]
+    #except:
+     #   print("Unexpected error:", sys.exc_info()[0])
 
 def processMessage(new_msg):
     message = new_msg.split(';')
