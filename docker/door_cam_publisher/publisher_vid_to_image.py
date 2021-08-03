@@ -67,9 +67,9 @@ while cap.isOpened():
     else:
         cap.release()
         break
-
-    if image_count == 100:
-        image_count = 0
+# TEMP Remove to debug
+#    if image_count == 100:
+#        image_count = 0
 
 
 
