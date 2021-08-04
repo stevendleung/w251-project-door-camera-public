@@ -10,22 +10,17 @@ import os
 
 ##Load pictures of known people
 # Load a sample picture and learn how to recognize it.
-steven_image = face_recognition.load_image_file("facial_rec_images/steven.jpg")
-steven_face_encoding = face_recognition.face_encodings(steven_image)[0]
+known_face_encodings = []
+known_face_names = []
 
-# Load a second sample picture and learn how to recognize it.
-sarah_image = face_recognition.load_image_file("facial_rec_images/sarah.jpg")
-sarah_face_encoding = face_recognition.face_encodings(sarah_image)[0]
-
-# Create arrays of known face encodings and their names
-known_face_encodings = [
-    steven_face_encoding,
-    sarah_face_encoding
-]
-known_face_names = [
-    "Steven Leung",
-    "Sarah Duru Leung"
-]
+i = 0 
+for filename in os.listdir('facial_rec_images'):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+        loaded_image = face_recognition.load_image_file("facial_rec_images/" + filename)
+        face_encoding = face_recognition.face_encodings(loaded_image)[0]
+    
+        known_face_encodings.append(face_encoding)
+        known_face_names.append(filename[:-4])
 
 # Initialize some variables
 face_locations = []
