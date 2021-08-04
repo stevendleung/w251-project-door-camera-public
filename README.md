@@ -36,8 +36,10 @@ We leveraged youtube videos licensed under the creative commons license for trai
 <br/>
   <img align="left" src="https://github.com/stevendleung/w251-project-door-camera/blob/main/images/segmentation.png" alt="image captioning" width="300"> 
 Frames were extracted at a 1 frame per second (fps) rate from each video. These frames served as our training, validation and test data. We used [deeplab segmentation](https://arxiv.org/pdf/1606.00915.pdf) to identify the pixel cooridinates of personnel in each images. These coordinates were converted to the correct format for Yolov5 to accept in the model. Through this method of annnotation, we were able to annotate ~10k images in a semi-automated fashion.
-
-
+<br/>
+<br/>
+<b>Facial recognition</b><br>
+Dlib's face-recognition python api provides one-shot capabilities for highly accurate face-recognition, performaing at 99.38% accuracy on the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) dataset. The library provides the option to run a Histogram Oriented Gradient (HOG) + Support Vector Machine (SVM) based model or a slightly more performant and resource intensive Convolutional Neural Network (CNN) based model. After testing both options and not finding a significant difference in performance for our use case, we opted for the less resource intensive HOG + SVM option in Knock-Knock.
 
 
 
