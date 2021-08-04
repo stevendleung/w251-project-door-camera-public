@@ -32,7 +32,7 @@ A deep learning powered door camera.
 ## Edge Inference:
 
 #### Demo
-![knock-knock demo](https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif){loop=""}
+![knock-knock demo](https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif)
 
 ## Conclusion:
 
