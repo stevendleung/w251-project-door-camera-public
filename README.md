@@ -17,7 +17,9 @@ A deep learning powered door camera.
 
 
 ## Abstract:
-<img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/images/knock-knock.png" alt="knock-knock" width="700" class="center"/>
+<p style="text-align:center;">
+<img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/images/knock-knock.png" alt="knock-knock" width="700"/>
+</p>
 
 ## Overall Architecture:
 ![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/data_pipeline.png)
