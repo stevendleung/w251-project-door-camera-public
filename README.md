@@ -65,12 +65,11 @@ The facial recognition and DND models both subscribe to the "Image Topic". Upon 
 The notification container is subscribed to the "Model Output" topic. Upon receipt of a message the notification adds the classification in the message to the cache. The cache is read every 20 seconds with the majority classifications received being output. We use [Twilio](https://www.twilio.com/) services to send SMS notifications to the registered user.
 
 <h2>Demo</h2>
-[mp4](https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.mp4)
 <p align="center"> 
   <img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif" alt="demo"/>
 </p>
 <br/>
-<h2> To Run:<h2/>
+<h2> To Run:</h2>
 Tested on Nvidia Jetson Xavier NX.<br/><b/>
 Prerequisites:
  - K8s installed
