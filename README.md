@@ -15,21 +15,23 @@ A deep learning powered door camera.
    - Full body recognition to identify delivery vs non-delivery personnel
 
 ## Abstract:
-![](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/data_pipeline.png)
+![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/knock-knock.png)
 
 ## Overall Architecture:
-
+![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/data_pipeline.png)
 
 
 ## Dataset:
 
 
 ## Image Captioning Models:
+![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/segmentation.png)
 
 ## Evaluation Results:
-
+![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/performance.png)
 
 ## Edge Inference:
+![knock-knock](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/edge_inference.png)
 
 #### Demo
 ![knock-knock demo](https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif)
