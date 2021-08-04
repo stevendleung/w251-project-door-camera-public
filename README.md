@@ -15,7 +15,7 @@ A deep learning powered door camera.
    - Full body recognition to identify delivery vs non-delivery personnel
 
 ## Abstract:
-
+![](https://github.com/stevendleung/w251-project-door-camera/blob/main/images/data_pipeline.png)
 
 ## Overall Architecture:
 
