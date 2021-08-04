@@ -75,6 +75,7 @@ Prerequisites:
 
  - K8s installed
  - Webcam available
+ - For facial recognition, add a frontal image of your face to docker/face_rec/facial_images
  
 ```
 xhost +
