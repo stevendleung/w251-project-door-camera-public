@@ -69,7 +69,7 @@ The notification container is subscribed to the "Model Output" topic. Upon recei
   <img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif" alt="demo"/>
 </p>
 <br/>
-## To Run:
+<h2> To Run:<h2/>
 
 
 ## Acknowledgements:
