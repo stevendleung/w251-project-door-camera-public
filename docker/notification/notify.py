@@ -105,21 +105,22 @@ def sendNotification():
         isActivityOn = False
 
         print("All Messages: ", allMessages)
-        account_sid = registeredUsers['account_sid']
-        auth_token = registeredUsers['token']
-        phone_number = registeredUsers['phone_number']
-        for (ndx,item) in enumerate(allMessages):
-            txt_msg = buildMessage(ndx, item)
-            if txt_msg == '':
-                continue
-            client = Client(account_sid, auth_token)
-            print("message: ", txt_msg)
-            message = client.messages \
-                        .create(
-                            body=txt_msg,
-                            from_='+19257018931',
-                            to=phone_number
-                        )
+#COMMENT BACK IN TO SEND NOTIFICATIONS
+        # account_sid = registeredUsers['account_sid']
+        # auth_token = registeredUsers['token']
+        # phone_number = registeredUsers['phone_number']
+        # for (ndx,item) in enumerate(allMessages):
+        #     txt_msg = buildMessage(ndx, item)
+        #     if txt_msg == '':
+        #         continue
+        #     client = Client(account_sid, auth_token)
+        #     print("message: ", txt_msg)
+        #     message = client.messages \
+        #                 .create(
+        #                     body=txt_msg,
+        #                     from_='+19257018931',
+        #                     to=phone_number
+        #                 )
 
             
             print("Predicted List so far: *********************\n", predictedList, "*********************\n")
@@ -172,7 +173,8 @@ def main(topic='model_output_topic',  # default topic
     print("Topic name listening to: ", LOCAL_NOTIF_TOPIC)
 
     # load the registered users
-    loadRegisteredUsers(users)
+    #COMMENT BACK IN TO USE SMS NOTIFICATION
+    #loadRegisteredUsers(users)
 
     # linking the CallBacks
     local_mqttclient.on_connect = on_connect_local
