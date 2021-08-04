@@ -89,11 +89,6 @@ cd w251-project-door-camera/docker
 sh launch_k8s.sh 
 ```
 
-Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock,
+Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock, please register an account at (twilio)[https://www.twilio.com/], fill in details in sample/RegisteredUsers.json, copy RegisteredUsers.json to /data on jetson, and uncomment lines 109-123 and 177 i notify.py/
  
-## Acknowledgements:
 
-
-## Files and Directories (prelim)
-
-- <ins>**Folder:**</ins> **docker**
