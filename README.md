@@ -70,7 +70,7 @@ The notification container is subscribed to the "Model Output" topic. Upon recei
 </p>
 <br/>
 <h2> To Run:</h2>
-Tested on Nvidia Jetson Xavier NX.<br/><b/>
+Tested on Nvidia Jetson Xavier NX.<br/><br/>
 Prerequisites:
  - K8s installed
  - Webcam available
