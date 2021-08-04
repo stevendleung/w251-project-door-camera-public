@@ -1,5 +1,5 @@
 # Knock-knock!
-###Steven Leung, Juan Ramirez and Javed Roshan
+### Steven Leung, Juan Ramirez and Javed Roshan
  
 A deep learning powered door camera.
 
