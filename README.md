@@ -30,7 +30,7 @@ We present a dual model deep learning door camera system that is able to recogni
 The recognition engine for knock-knock is made up of two components- Personnel Recognition and Facial Recognition.
 <br/>
 <br/>
-### Personnel Recognition
+###### Personnel Recognition
 <b>Image Collection and Annotation</b><br>
 We leveraged youtube videos licensed under the creative commons license for training images. We identified these videos using two sets of search queries- the first set related to delivery personnel, for example "Door Camera Delivery", "Ring Delivery", etc. and the second related to non-delivery personnel. By doing some further manual review and clean-up of the videos, we verified that individuals appearing in the first set of videos could be labelled as delivery personnel while individuals in the second set could be labelled non-delivery. 
 <br/>
@@ -43,7 +43,7 @@ Frames were extracted at a 1 frame per second (fps) rate from each video. These 
 Yolo (You Only Look Once) v5 is a state-of-the-art convolutional neural network (CNN) based object detection model trained on the Imagenet dataset. It has 24 convolutional layers with 2 fully connected layers. V5 is the first version written in Pytorch framework, allowing for more general usability. We fine-tuned YOLOv5s on our curateed dataset. See the subsequent section for training details.
 <br/>
 <br/>
-### Facial recognition
+###### Facial recognition
 <br/>
 Dlib's face-recognition python api provides one-shot capabilities for highly accurate face-recognition, performaing at 99.38% accuracy on the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) dataset. The library provides the option to run a Histogram Oriented Gradient (HOG) + Support Vector Machine (SVM) based model or a slightly more performant and resource intensive Convolutional Neural Network (CNN) based model. After testing both options and not finding a significant difference in performance for our use case, we opted for the less resource intensive HOG + SVM option in Knock-Knock.
 
