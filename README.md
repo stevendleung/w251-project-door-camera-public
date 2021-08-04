@@ -71,8 +71,26 @@ The notification container is subscribed to the "Model Output" topic. Upon recei
 </p>
 <br/>
 <h2> To Run:<h2/>
+Tested on Nvidia Jetson Xavier NX.<br/><b/>
+Prerequisites:
+ - K8s installed
+ - Webcam available
+ 
+```
+xhost +
+ 
+git clone https://github.com/stevendleung/w251-project-door-camera.git
+ 
+#make directory to store video frames
+sudo mkdir /data/door_cam_images/images
 
+cd w251-project-door-camera/docker
+ 
+sh launch_k8s.sh 
+```
 
+Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock,
+ 
 ## Acknowledgements:
 
 
