@@ -44,7 +44,6 @@ Yolo (You Only Look Once) v5 is a state-of-the-art convolutional neural network 
 <br/>
 <br/>
 <h3> Facial recognition </h3>
-<br/>
 Dlib's face-recognition python api provides one-shot capabilities for highly accurate face-recognition, performaing at 99.38% accuracy on the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) dataset. The library provides the option to run a Histogram Oriented Gradient (HOG) + Support Vector Machine (SVM) based model or a slightly more performant and resource intensive Convolutional Neural Network (CNN) based model. After testing both options and not finding a significant difference in performance for our use case, we opted for the less resource intensive HOG + SVM option in Knock-Knock.
 
 ## Evaluation Results:
@@ -59,13 +58,15 @@ We trained the model twice for 250 epochs each, first on a limited dataset and f
 </p>
 Inference is done on the Nvidia Jetson Xavier NX. The entire process is designed to run within docker containers in a kubernetes cluster. The architecture accomodates for the dual model system. First, the live video stream is processed into frames stored locally. We use [Eclipse Mosquitto](https://mosquitto.org/) message broker to publish messages to "Image Topic" in the format shown above, with the key information being the file path of the latest stored image. 
 <br/>
+<br/>
 The facial recognition and DND models both subscribe to the "Image Topic". Upon message receipt, the models concurrently run inference on the image identified in the message. If the models recognize a person in the image, the output is published to the "Model Output" topic in the format show. If a person is not recognized, not message is published.
+<br/>
 <br/>
 The notification container is subscribed to the "Model Output" topic. Upon receipt of a message the notification adds the classification in the message to the cache. The cache is read every 20 seconds with the majority classifications received being output. We use [Twilio](https://www.twilio.com/) services to send SMS notifications to the registered user.
 
-## Demo
+<h2>Demo</h2>
 <p align="center"> 
-  <img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif)" alt="demo">
+  <img src="https://github.com/stevendleung/w251-project-door-camera/blob/main/demo/knock_knock_demo.gif)" alt="demo"/>
 </p>
 <br/>
 ## To Run:
