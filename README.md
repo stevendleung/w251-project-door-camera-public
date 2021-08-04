@@ -94,6 +94,11 @@ sh launch_k8s.sh
 kubectl logs -f "notify pod name"
 ```
 
-Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock, please register an account at (twilio)[https://www.twilio.com/], fill in details in sample/RegisteredUsers.json, copy RegisteredUsers.json to /data on jetson, and uncomment lines 109-123 and 177 i notify.py/
+Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock, 
+
+- please register an account at (twilio)[https://www.twilio.com/] (Trial account is an option)
+- fill in details in sample/RegisteredUsers.json
+- copy RegisteredUsers.json to /data on jetson
+- uncomment lines 109-123 and 177 i notify.py/
  
 
