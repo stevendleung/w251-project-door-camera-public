@@ -30,7 +30,7 @@ We present a dual model deep learning door camera system that is able to recogni
 The recognition engine for knock-knock is made up of two components- Personnel Recognition and Facial Recognition.
 <br/>
 <br/>
-###### Personnel Recognition
+<h3>Personnel Recognition</h3>
 <b>Image Collection and Annotation</b><br>
 We leveraged youtube videos licensed under the creative commons license for training images. We identified these videos using two sets of search queries- the first set related to delivery personnel, for example "Door Camera Delivery", "Ring Delivery", etc. and the second related to non-delivery personnel. By doing some further manual review and clean-up of the videos, we verified that individuals appearing in the first set of videos could be labelled as delivery personnel while individuals in the second set could be labelled non-delivery. 
 <br/>
