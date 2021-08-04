@@ -79,11 +79,12 @@ Prerequisites:
  
 ```
 xhost +
+export DISPLAY=:0
  
 git clone https://github.com/stevendleung/w251-project-door-camera.git
  
 #make directory to store video frames
-sudo mkdir /data/door_cam_images/images
+sudo mkdir -p /data/door_cam_images/images
 
 cd w251-project-door-camera/docker
  
