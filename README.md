@@ -89,6 +89,9 @@ sudo mkdir -p /data/door_cam_images/images
 cd w251-project-door-camera/docker
  
 sh launch_k8s.sh 
+
+#Once k8s pods are spun up, check logs of notify container to see incoming messages from both models
+kubectl logs -f "notify pod name"
 ```
 
 Notification system is commented out by default in docker/notification/notify.py. To use this component of Knock-Knock, please register an account at (twilio)[https://www.twilio.com/], fill in details in sample/RegisteredUsers.json, copy RegisteredUsers.json to /data on jetson, and uncomment lines 109-123 and 177 i notify.py/
