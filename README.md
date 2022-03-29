@@ -10,7 +10,7 @@ A deep learning powered door camera.
 
 
 ## Goal:
-* Knock-knock is a novel door camera that recognizes common personnel at the door and notifies a user, implementing these capablities:
+* Knock-knock is a novel door camera that recognizes common personnel at the door and notifies a user, implementing these capabilities:
    - Facial Recognition to identify known individuals
    - Full body recognition to identify delivery vs non-delivery personnel
 
