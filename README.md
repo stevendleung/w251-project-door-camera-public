@@ -5,7 +5,7 @@ A deep learning powered door camera.
 
 [Technical Paper]()        
     
-[Presentation]()
+[Presentation](https://github.com/stevendleung/w251-project-door-camera-public/blob/690dcfa3914f4df0a12c297a4cfb66c66b2f4544/knock-knock%20w251%20final%20presentation.pdf)
 
 
 
